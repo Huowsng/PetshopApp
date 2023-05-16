@@ -1,0 +1,5 @@
+export const INCREAMENT = "INCREAMENT";
+export const DECREAMENT = "DECREAMENT";
+export const CHANGE_APP_MODE = "CHANGE_APP_MODE";
+export const SAVE_APP_TOKEN = "SAVE_APP_TOKEN";
+export const RELOAD_CART = "RELOAD_CART";
