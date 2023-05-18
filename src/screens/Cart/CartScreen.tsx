@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Image, RefreshControl, ActivityIndicator, FlatList } from "react-native";
 import { useDispatch, useSelector, Provider } from "react-redux";
 import { cat, fonts, ICart, ic_app_logo, ic_menu, ic_trash, IItemType, IListOrderItem, IProductCart, IStore, SCREENNAME} from "../../shared";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../../shared/colors";
+import CartComponent from "./Components/CartComponents";
+import { RELOAD_CART } from "../../redux/actions/actionTypes";
 interface IProductCartParams {
     item: IProductCart
 }
-export default  () => {
+const CartScreen = () => {
     const dispatch = useDispatch();
 const navigation = useNavigation<any>();
 const token = useSelector((state: IStore) => state?.appReducer.token);
@@ -19,51 +21,112 @@ const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 const [data, setData] = useState<ICart | undefined>(undefined);
 
 const getData = async () => {
-  setIsLoading(true);
-  await fetch(`https://pet.kreazy.me/api/cart`, {
-    method: "GET",
-    headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
-      "Connection": "keep-alive",
-      "Authorization": `${token}`
-    },
-  })
-    .finally(() => {
-      setIsLoading(false);
-    })
-    .then((response) => response.json())
-    .then((response) => {
-      setData(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  setIsLoading(false);
-};
+        setIsLoading(true);
+        await fetch(`https://petshop-95tt.onrender.com/api/orders`, {
+          method: "GET",
+          headers: {
+            Accept: '*/*',
+            'Content-Type': 'application/json',
+            "Connection": "keep-alive",
+            "Authorization": `${token}`
+          },
+        })
+          .finally(() => {
+            setIsLoading(false);
+          })
+          .then((response) => response.json())
+          .then((response) => {
+            setData(response.data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+        setIsLoading(false);
+      };
 
-useEffect(() => {
-  if (isReloadCart) {
-    getData();
-    dispatch({ type: "RELOAD_CART", payload: false });
-  }
-}, [isReloadCart]);
-const renderCheckout = () => {
-    const navigation = useNavigation();
-  
-    return (
-      <TouchableOpacity
-        disabled={total === 0}
-        style={styles.wrapCheckout}
-        onPress={() => {
-          navigation.navigate(SCREENNAME.PAYMENT_SCREEN, { orderID: data?._id, totalPay: data?.total })
-        }}
-      >
-        <Text style={styles.txtCheckout}>{`Check out: $${total}`}</Text>
-      </TouchableOpacity>
-    );
-  };
+      React.useEffect(() => {
+        setTotal(data?.total ?? 0)
+    }, [data])
+
+
+    React.useEffect(() => {
+        getData();
+    }, [])
+
+    React.useEffect(() => {
+        if (isReloadCart) {
+            getData();
+            dispatch({
+                type: RELOAD_CART,
+                payload: false
+            })
+        }
+    }, [isReloadCart])
+      const renderCheckout = () => {
+          const navigation = useNavigation();
+        
+          return (
+            <TouchableOpacity
+              disabled={total === 0}
+              style={styles.wrapCheckout}
+              onPress={() => {
+                navigation.navigate(SCREENNAME.PAYMENT_SCREEN, { orderID: data?._id, totalPay: data?.total })
+              }}
+            >
+              <Text style={styles.txtCheckout}>{`Check out: $${total}`}</Text>
+            </TouchableOpacity>
+          );
+        };
+        const renderEmpty = (() => {
+          return <View style={{ marginTop: 200 }}>
+              <Text style={{ color: colors.cyan, fontSize: 20, textAlign: "center" }}>{`Empty Card!\n Add any product to checkout`}</Text>
+          </View>
+      })
+      const renderHeader = (() => {
+        return <View style={styles.wrapHeader}>
+            <Image
+                source={ic_app_logo}
+                resizeMode="contain"
+                style={styles.wrapLogo}
+            />
+            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+                <Image
+                      source={ic_menu}
+                      resizeMode="contain"
+                      style={styles.wrapMenu}
+                />
+            </TouchableOpacity>
+        </View>
+      })
+      const keyExtractor = useCallback((item, index) => `${item} ${index}`, []);
+
+return (
+  <View style={{ flex: 1 }}>
+    <View style={styles.container}>
+      {isLoading ? (
+        <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+          <ActivityIndicator size="large" color={colors.cyan} />
+        </View>
+      ) : (
+        <FlatList
+          renderItem={({ item }) => <CartComponent order_id={data?._id ?? ''} itemType={item} />}
+          data={data?.listOrderItems}
+          keyExtractor={keyExtractor}
+          ListEmptyComponent={renderEmpty}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={renderHeader}
+          ListFooterComponent={<View style={{ height: 50 }} />}
+          stickyHeaderIndices={[0]}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={getData} />}
+        />
+      )}
+    </View>
+    {renderCheckout()}
+  </View>
+);
+
 }
+export default CartScreen
 
 const styles = StyleSheet.create({
     container: {

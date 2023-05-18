@@ -65,7 +65,7 @@ const DrawerContent = () => {
       </View>
       <DrawerItem
         icon={({ color, size }) => (
-          <Ionicons name="home-outline" color={color} size={size} />
+          <Ionicons name="home" size={24} color="black" />
         )}
         label="Home"
         onPress={() => {}}
@@ -79,7 +79,7 @@ const DrawerContent = () => {
       />
       <DrawerItem
         icon={({ color, size }) => (
-            <AntDesign name="shoppingcart" size={24} color="black" />
+          <Ionicons name="cart-sharp" size={24} color="black" />
         )}
         label="Shop"
         onPress={() => navigation.navigate(SCREENNAME.SHOP_SCREEN)}
@@ -93,14 +93,14 @@ const DrawerContent = () => {
       />
       <DrawerItem
         icon={({ color, size }) => (
-            <Ionicons name="logo-dropbox" size={24} color="black" />
+          <Ionicons name="md-logo-dropbox" size={24} color="black" />
         )}
         label="Blog"
         onPress={() => {}}
       />
       <DrawerItem
         icon={({ color, size }) => (
-            <AntDesign name="shoppingcart" size={24} color="black" />
+          <Ionicons name="call" size={24} color="black" />
         )}
         label="Contact"
         onPress={() => {}}
@@ -117,7 +117,7 @@ const DrawerContent = () => {
           <Drawer.Section style={styles.bottomDrawerSection}>
             <DrawerItem
               icon={({ color, size }) => (
-                <Ionicons name="log-out" color={color} size={size} />
+                <Ionicons name="log-out" size={24} color="black" />
               )}
               label="Sign out"
               onPress={() => {

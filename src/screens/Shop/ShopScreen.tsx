@@ -24,7 +24,7 @@ const ShopScreen = () => {
 
     const loadData = async () => {
         setIsLoading(true);
-        fetch('http://petshopdut.herokuapp.com/api/products')
+        fetch('https://petshop-95tt.onrender.com/api/products')
             .then((response) => response.json())
             .then((responseJson) => {
                 setData(responseJson.products);
@@ -39,7 +39,7 @@ const ShopScreen = () => {
 
     const getCategory = () => {
         setIsLoadingCategory(true);
-        fetch('http://pet.kreazy.me/api/category')
+        fetch('https://petshop-95tt.onrender.com/api/category')
             .then((response) => response.json())
             .then((responseJson) => {
                 setItems([{ label: 'All', value: 'All', index: -1 }])
@@ -55,7 +55,7 @@ const ShopScreen = () => {
 
     const getProductbyCategory = async () => {
         setIsLoading(true);
-        fetch(`http://petshopdut.herokuapp.com/api/products?category=${value}`)
+        fetch(`https://petshop-95tt.onrender.com/api/products?category=${value}`)
             .then((response) => response.json())
             .then((responseJson) => {
                 setData(responseJson.products);
@@ -70,7 +70,7 @@ const ShopScreen = () => {
 
     const onSearchProduct = async () => {
         setIsLoading(true);
-        const url = `http://pet.kreazy.me/api/products/search?searchToken=${searchToken}`
+        const url = `https://petshop-95tt.onrender.com/api/products/search?searchToken=${searchToken}`
         console.log(url)
         fetch(url)
             .then((response) => response.json())

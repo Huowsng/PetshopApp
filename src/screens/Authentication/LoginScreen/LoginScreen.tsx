@@ -8,46 +8,48 @@ import colors from '../../../shared/colors';
 import { img_login } from '../../../shared/assets';
 import { SAVE_APP_TOKEN } from '../../../redux/actions/actionTypes';
 import { SCREENNAME } from '../../../shared';
+import axios from 'axios';
 const LoginScreen = () => {
      const navigation = useNavigation();
 
-    const [email, setEmail] = useState('admin@gmail.com');
-    const [password, setPassword] = useState('123456');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const { colors } = useTheme();
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const handleLogin = async () => {
-        setIsLoading(true);
-        var body = JSON.stringify({
-          email: email,
-          password: password
-        });
-        try {
-          const response = await fetch('https://petshop-95tt.onrender.com/user/login', {
-            method: "POST",
-            headers: {
-              Accept: '*/*',
-              'Content-Type': 'application/json',
-              "Connection": "keep-alive"
-            },
-            body: body,
-          });
-          if (response.status === 400) {
-            showPopup();
-            throw new Error("Invalid email or password");
+      setIsLoading(true);
+      var body = JSON.stringify({
+        email: email,
+        password: password
+      });
+    
+      try {
+        const response = await axios.post('https://petshop-95tt.onrender.com/user/login', body, {
+          headers: {
+            Accept: '*/*',
+            'Content-Type': 'application/json',
+            "Connection": "keep-alive"
           }
-          const responseData = await response.json();
-          navigation.navigate(SCREENNAME.HOME_STACK);
-          dispatch({
-            type: SAVE_APP_TOKEN,
-            payload: responseData.accesstoken
-          });
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setIsLoading(false);
+        });
+    
+        if (response.status === 400) {
+          showPopup();
+          throw new Error("Invalid email or password");
         }
-      };
+    
+        const responseData = response.data;
+        navigation.navigate(SCREENNAME.HOME_STACK);
+        dispatch({
+          type: SAVE_APP_TOKEN,
+          payload: responseData.accesstoken
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
       
       const showPopup = () => {
         Alert.alert(

@@ -1,2 +1,3 @@
 export * from "./Components"
-import * from "./CartScreen"
+export * from "./CartScreen"
+export * from "./PaymentScreen"

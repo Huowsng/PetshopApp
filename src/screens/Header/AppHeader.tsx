@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TextInput, Alert,Image,ActivityIndicator } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, Alert,Image,ActivityIndicator, Pressable } from "react-native";
 import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
+import { DrawerActions, useNavigation, useTheme } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
 import colors from '../../shared/colors';
 import { ic_app_logo, ic_menu } from '../../shared';
@@ -13,6 +13,8 @@ const appAppHeader = () => {
 } 
 export default appAppHeader
 const AppNavbar = () => {
+  const navigation = useNavigation();
+
     return (
         <View style={styles.wrapHeader}>
       <Image
@@ -20,13 +22,10 @@ const AppNavbar = () => {
         resizeMode="contain"
         style={styles.wrapLogo}
       />
-      {/* <TouchableOpacity onPress={openDrawer}>
-        <Image
-          source={ic_menu}
-          resizeMode="contain"
-          style={styles.wrapMenu}
-        />
-      </TouchableOpacity> */}
+      
+<Pressable onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+  <Ionicons name="menu" size={24} color="black" />
+</Pressable>
     </View>
       );
 }
