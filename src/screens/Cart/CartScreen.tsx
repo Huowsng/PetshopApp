@@ -6,6 +6,7 @@ import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native
 import colors from "../../shared/colors";
 import CartComponent from "./Components/CartComponents";
 import { RELOAD_CART } from "../../redux/actions/actionTypes";
+import axios, { AxiosRequestHeaders } from "axios";
 interface IProductCartParams {
     item: IProductCart
 }
@@ -21,28 +22,29 @@ const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 const [data, setData] = useState<ICart | undefined>(undefined);
 
 const getData = async () => {
-        setIsLoading(true);
-        await fetch(`https://petshop-95tt.onrender.com/api/orders`, {
-          method: "GET",
-          headers: {
-            Accept: '*/*',
-            'Content-Type': 'application/json',
-            "Connection": "keep-alive",
-            "Authorization": `${token}`
-          },
-        })
-          .finally(() => {
-            setIsLoading(false);
-          })
-          .then((response) => response.json())
-          .then((response) => {
-            setData(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-        setIsLoading(false);
-      };
+  setIsLoading(true);
+
+  try {
+    const headers: Record<string, string> = {
+      Accept: '*/*',
+      'Content-Type': 'application/json',
+      Connection: 'keep-alive',
+      Authorization: token as string,
+    };
+
+    const response = await axios.get('https://petshop-95tt.onrender.com/user/addcart', {
+      headers: headers,
+    });
+
+    setData(response.data.data);
+
+  } catch (error) {
+    console.error(error);
+  }
+
+  setIsLoading(false);
+};
+
 
       React.useEffect(() => {
         setTotal(data?.total ?? 0)

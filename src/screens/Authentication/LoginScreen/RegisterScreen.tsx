@@ -9,11 +9,12 @@ import { img_login } from '../../../shared/assets';
 import { SAVE_APP_TOKEN } from '../../../redux/actions/actionTypes';
 import { SCREENNAME } from '../../../shared';
 import axios from 'axios';
-const LoginScreen = () => {
-     const navigation = useNavigation();
+const RegisterScreen = () => {
+    const navigation = useNavigation();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
     const { colors } = useTheme();
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
@@ -21,11 +22,12 @@ const LoginScreen = () => {
       setIsLoading(true);
       var body = JSON.stringify({
         email: email,
-        password: password
+        password: password,
+        name : name
       });
     
       try {
-        const response = await axios.post('https://petshop-95tt.onrender.com/user/login', body, {
+        const response = await axios.post('https://petshop-95tt.onrender.com/user/register', body, {
           headers: {
             Accept: '*/*',
             'Content-Type': 'application/json',
@@ -39,7 +41,7 @@ const LoginScreen = () => {
         }
     
         const responseData = response.data;
-        navigation.navigate(SCREENNAME.HOME_STACK);
+        navigation.navigate(SCREENNAME.LOGIN_SCREEN);
         dispatch({
           type: SAVE_APP_TOKEN,
           payload: responseData.accesstoken
@@ -64,7 +66,7 @@ const LoginScreen = () => {
     
     <ScrollView >
       <Text style={styles.txtLogin}>
-        Login
+        Register
       </Text>
       <View style={styles.wrapImage}>
            <Image
@@ -73,6 +75,22 @@ const LoginScreen = () => {
                 resizeMode={"cover"}
            />
       </View>
+      <Text style={styles.txtDetail}>Name</Text>
+      <View style={styles.wrapBorderInput}>
+      <Ionicons
+            name="person-outline"
+            color={colors.text}
+            size={20}
+            style={{ marginLeft: 10 }}
+      />
+      <TextInput
+            style={styles.txtInput}
+            numberOfLines={1}
+            value={name}
+            placeholder="Name"
+            onChangeText={value => setName(value)}
+      />
+    </View>
       <Text style={styles.txtDetail}>Email</Text>
       <View style={styles.wrapBorderInput}>
       <Ionicons
@@ -111,35 +129,24 @@ const LoginScreen = () => {
         {isLoading ? (
           <ActivityIndicator size={20} color={colors.text} />
         ) : (
-          <Text style={styles.txtButtonLogin}>Login</Text>
+          <Text style={styles.txtButtonLogin}>Register now</Text>
         )}
       </View>
     </TouchableOpacity>
     <TouchableOpacity
-      onPress={() => navigation.navigate(SCREENNAME.REGISTER_SCREEN )}
+      onPress={() => navigation.navigate(SCREENNAME.LOGIN_SCREEN )}
       style={{ alignItems: 'center' }}
     >
       <Text style={styles.txtDetailCreate}>
-        Register?
+        Login?
         <Text style={styles.txtCreateAccount}> </Text>
       </Text>
     </TouchableOpacity>
-    <TouchableOpacity
-      onPress={() => navigation.navigate(SCREENNAME.FORGOT_PASSWORD_SCREEN )}
-      style={{ alignItems: 'center' }}
-    >
-      <Text style={styles.txtDetailCreate}>
-        Forgot password?
-        <Text style={styles.txtCreateAccount}> </Text>
-      </Text>
-    </TouchableOpacity>
+    
     </ScrollView>
-
-
-  );
-};
-
-export default LoginScreen;
+    );
+}
+export default RegisterScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,

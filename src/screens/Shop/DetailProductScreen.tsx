@@ -13,6 +13,7 @@ import { RELOAD_CART } from '../../redux/actions/actionTypes';
 import { Snackbar } from 'react-native-paper';
 import FeedbackComp from './Components/FeedbackComp';
 import { showMessage } from "react-native-flash-message";
+import axios from 'axios';
 
 
 
@@ -21,7 +22,7 @@ const DetailProductScreen = () => {
     const navigation = useNavigation<any>();
     const dispatch = useDispatch();
     const route = useRoute();
-    const token = useSelector((state: IStore) => state?.appReducer.token);
+    const token = useSelector((state: any) => state?.appReducer.token);
 
     const { productID } = route.params as { productID: string };
     const [cardCount, setCardCount] = useState<number>(1);
@@ -60,65 +61,57 @@ const DetailProductScreen = () => {
         setIsLoading(false);
     })
 
-    const addCart = (async () => {
-        setIsAddCart(true)
-        var body = {
-            "type_id": data?.types[value]._id,
-            "amount": cardCount,
-            "product_id": productID
-        }
-        console.log(JSON.stringify(body))
-        await fetch(`https://petshop-95tt.onrender.com/api/cart`,
-            {
-                method: "PUT",
-                headers: {
-                    Accept: '*/*',
-                    'Content-Type': 'application/json',
-                    "Connection": "keep-alive",
-                    "Authorization": `${token}`
-                },
-                body: JSON.stringify(body)
-            }
-        ).finally(() => {
-            setIsAddCart(false);
-        }).then((response) => {
-            if (response.status == 200) {
-                showMessage({
-                  message: 'Add this product to cart successfully!',
-                  duration: 3000,
-                  description: '',
-                  type: 'success',
-                  backgroundColor: 'green',
-                  color: 'white',
-                  onPress: () => {
-                    navigation.navigate(SCREENNAME.CART_SCREEN);
-                  },
-                });
-                dispatch({
-                  type: RELOAD_CART,
-                  payload: true,
-                });
-              } else {
-                showMessage({
-                  message: 'Cannot add to cart!',
-                  duration: 3000,
-                  description: '',
-                  type: 'danger',
-                  backgroundColor: 'red',
-                  color: 'white',
-                });
-              }
-            return response.json()
-        })
-            .then((response,) => {
-                console.log(response)
-            })
-            .catch((error) => {
-                console.error(error);
+    const addCart = async () => {
+        setIsAddCart(true);
+        const body = {
+          type_id: data?.types[value]._id,
+          amount: cardCount,
+          product_id: productID,
+        };
+        console.log(JSON.stringify(body));
+        try {
+          const response = await axios.put('https://petshop-95tt.onrender.com/user/addcart', body, {
+            headers: {
+              Accept: '*/*',
+              'Content-Type': 'application/json',
+              Connection: 'keep-alive',
+              Authorization: `${token}`,
+            },
+          });
+          if (response.status === 200) {
+            console.log("okokokokokokokookokoko")
+            showMessage({
+              message: 'Add this product to cart successfully!',
+              duration: 3000,
+              description: '',
+              type: 'success',
+              backgroundColor: 'green',
+              color: 'white',
+              onPress: () => {
+                navigation.navigate(SCREENNAME.CART_SCREEN);
+              },
             });
-        setIsAddCart(false);
-    })
-
+            dispatch({
+              type: RELOAD_CART,
+              payload: true,
+            });
+          } else {
+            showMessage({
+              message: 'Cannot add to cart!',
+              duration: 3000,
+              description: '',
+              type: 'danger',
+              backgroundColor: 'red',
+              color: 'white',
+            });
+          }
+          console.log(response.data);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsAddCart(false);
+        }
+      };
 
     const onRefresh = (() => {
         setRefreshing(true);

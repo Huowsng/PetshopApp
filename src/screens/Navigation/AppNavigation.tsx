@@ -25,6 +25,7 @@ import ProfileScreen from '../Profile/ProfileScreen';
 import EditProfileScreen from '../Profile/EditProfileScreen';
 import MapWebviewScreen from '../Profile/OderHistory/Components/MapWebviewScreen';
 import WishListScreen from '../Wishlist/WishListScreen';
+import RegisterScreen from '../Authentication/LoginScreen/RegisterScreen';
 
 
 const AppNavigation = () => {
@@ -102,6 +103,12 @@ const AppNavigation = () => {
                 options={{ headerShown: false }}
                 component={LoginScreen}
             />
+            <Stack.Screen
+                name = {SCREENNAME.REGISTER_SCREEN}
+                options={{headerShown: false}}
+                component={RegisterScreen}
+            />
+
             <Stack.Screen
                 name={SCREENNAME.HOME_STACK}
                 options={{ headerShown: false }}

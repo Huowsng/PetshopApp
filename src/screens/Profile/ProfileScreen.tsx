@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         alignItems: "center",
-        //justifyContent: 'center',
-        //borderWidth:1,
+        justifyContent: 'center',
+        borderWidth:1,
     },
     wrapHome: {
         height: '20%',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     },
     wrapBody: {
         width: '100%',
-        height: '80%',
+        height: '87%',
         //borderWidth: 1,
         flexDirection: 'column',
         justifyContent: 'center',
