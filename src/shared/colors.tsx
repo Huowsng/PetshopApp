@@ -6,7 +6,7 @@ export default {
     grayTabbar: "#1A1A1A",
     orangeTabbar: "#F27213",
     orage_bg: "#FF7814",
-    white: "#FFF",
+    white: "#FFFFFF",
     gray_bg: "#C5C5C5",
     black: "#000",
     cyan_text: "#2B295E"

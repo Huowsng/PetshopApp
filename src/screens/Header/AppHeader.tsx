@@ -24,7 +24,7 @@ const AppNavbar = () => {
       />
       
 <Pressable onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-  <Ionicons name="menu" size={24} color="black" />
+  <Ionicons name="menu" size={40} color="black" />
 </Pressable>
     </View>
       );
@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 20,
-        backgroundColor: colors.cyan,
-        height: 80,
+        padding: 30,
+        backgroundColor: "#3f3f52",
+        height: 145,
     },
     wrapLogo: {
         height: 38,

@@ -35,6 +35,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-snackbar": "^2.6.2",
     "react-native-stack": "^1.0.0-alpha11",
+    "react-native-toast-message": "^2.1.6",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.11",
     "react-native-webview": "11.26.0",

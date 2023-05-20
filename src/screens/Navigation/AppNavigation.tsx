@@ -26,6 +26,7 @@ import EditProfileScreen from '../Profile/EditProfileScreen';
 import MapWebviewScreen from '../Profile/OderHistory/Components/MapWebviewScreen';
 import WishListScreen from '../Wishlist/WishListScreen';
 import RegisterScreen from '../Authentication/LoginScreen/RegisterScreen';
+import Toast from 'react-native-toast-message';
 
 
 const AppNavigation = () => {
@@ -52,11 +53,11 @@ const AppNavigation = () => {
             screenOptions={{
                 headerShown: false,
                 tabBarStyle: {
-                    minHeight: 70,
+                    minHeight: 65,
                     justifyContent: "center",
                     alignItems: "center",
                     alignSelf: "center",
-                    marginTop: 5
+                    marginTop: 6
                 }
             }}
         >
@@ -67,14 +68,16 @@ const AppNavigation = () => {
                     tabBarLabel: "",
                     tabBarIcon: ({ focused }) => { return tabbarIcon(focused, 'shopping-bag', "Shop") }
                 }}
+                
             />
             <Tab.Screen
                 name={SCREENNAME.CART_SCREEN}
                 component={CartScreen}
                 options={{
                     tabBarLabel: "",
-                    tabBarIcon: ({ focused }) => { return tabbarIcon(focused, "shopping-cart", "Cart") }
+                    tabBarIcon: ({ focused }) => { return tabbarIcon(focused, "shopping-cart", "Cart") },      
                 }}
+            
             />
             {/* <Tab.Screen
                 name={SCREENNAME.WISHLIST_SCREEN}
@@ -95,7 +98,8 @@ const AppNavigation = () => {
         </Tab.Navigator>
     })
     const HomeDrawer = (() => {
-        return <Stack.Navigator
+        return <Stack.Navigator     
+        
             initialRouteName={token.length === 0 ? SCREENNAME.LOGIN_SCREEN : SCREENNAME.HOME_STACK
             }>
             <Stack.Screen
@@ -163,8 +167,8 @@ const AppNavigation = () => {
     })
 
     return (
-        <NavigationContainer>
-            <Drawer.Navigator
+        <NavigationContainer >
+            <Drawer.Navigator 
                 initialRouteName={SCREENNAME.HOME_DRAWER}
                 drawerContent={props => <DrawerContent />}>
                 <Drawer.Screen
@@ -172,13 +176,21 @@ const AppNavigation = () => {
                     name={"Homepage"}
                     component={HomeDrawer}
                 />
+                <Drawer.Screen
+                    options={{ headerShown: false }}
+                    name= {"Cart"}
+                    component={CartScreen}
+                />
+                 
             </Drawer.Navigator>
+            <Toast />
         </NavigationContainer>
     );
 }
 export default AppNavigation
 const styles = StyleSheet.create({
     container: {
+        backgroundColor : 'white'
     },
     tabbarStyle: {
         height: 90

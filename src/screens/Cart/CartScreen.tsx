@@ -7,63 +7,62 @@ import colors from "../../shared/colors";
 import CartComponent from "./Components/CartComponents";
 import { RELOAD_CART } from "../../redux/actions/actionTypes";
 import axios, { AxiosRequestHeaders } from "axios";
+import AppHeader from "../Header/AppHeader";
 interface IProductCartParams {
     item: IProductCart
 }
-const CartScreen = () => {
-    const dispatch = useDispatch();
-const navigation = useNavigation<any>();
-const token = useSelector((state: IStore) => state?.appReducer.token);
-const isReloadCart = useSelector((state: IStore) => state?.appReducer.isReloadCart);
+              const CartScreen = () => {
+                  const dispatch = useDispatch();
+              const navigation = useNavigation<any>();
+              const token = useSelector((state: IStore) => state?.appReducer.token);
+              const isReloadCart = useSelector((state: IStore) => state?.appReducer.isReloadCart);
 
-const [total, setTotal] = useState<number>(0);
-const [isLoading, setIsLoading] = useState<boolean>(false);
-const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-const [data, setData] = useState<ICart | undefined>(undefined);
+              const [total, setTotal] = useState<number>(0);
+              const [isLoading, setIsLoading] = useState<boolean>(false);
+              const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+              const [data, setData] = useState<ICart | undefined>(undefined);
 
-const getData = async () => {
-  setIsLoading(true);
-
-  try {
-    const headers: Record<string, string> = {
-      Accept: '*/*',
-      'Content-Type': 'application/json',
-      Connection: 'keep-alive',
-      Authorization: token as string,
-    };
-
-    const response = await axios.get('https://petshop-95tt.onrender.com/user/addcart', {
-      headers: headers,
-    });
-
-    setData(response.data.data);
-
-  } catch (error) {
-    console.error(error);
-  }
-
-  setIsLoading(false);
-};
-
-
-      React.useEffect(() => {
-        setTotal(data?.total ?? 0)
-    }, [data])
-
-
-    React.useEffect(() => {
-        getData();
-    }, [])
-
-    React.useEffect(() => {
-        if (isReloadCart) {
-            getData();
-            dispatch({
-                type: RELOAD_CART,
-                payload: false
+              const getData = (async () => {
+                setIsLoading(true);
+                await fetch(`https://petshop-95tt.onrender.com/api/cart`,
+                    {
+                        method: "GET",
+                        headers: {
+                            Accept: '*/*',
+                            'Content-Type': 'application/json',
+                            "Connection": "keep-alive",
+                            "Authorization": `${token}`
+                        },
+                    }
+                ).finally(() => {
+                    setIsLoading(false);
+                }).then((response) => response.json())
+                    .then((response,) => {
+                        setData(response)
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+                setIsLoading(false);
             })
-        }
-    }, [isReloadCart])
+
+            React.useEffect(() => {
+              setTotal(data?.total ?? 0);
+            }, [data]);
+
+            React.useEffect(() => {
+              getData();
+            }, []);
+
+            React.useEffect(() => {
+              if (isReloadCart) {
+                getData();
+                dispatch({
+                  type: RELOAD_CART,
+                  payload: false,
+                });
+              }
+            }, [isReloadCart]);
       const renderCheckout = () => {
           const navigation = useNavigation();
         
@@ -85,25 +84,26 @@ const getData = async () => {
           </View>
       })
       const renderHeader = (() => {
-        return <View style={styles.wrapHeader}>
-            <Image
-                source={ic_app_logo}
-                resizeMode="contain"
-                style={styles.wrapLogo}
-            />
-            <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-                <Image
-                      source={ic_menu}
-                      resizeMode="contain"
-                      style={styles.wrapMenu}
-                />
-            </TouchableOpacity>
-        </View>
+        // return <View style={styles.wrapHeader}>
+        //     {/* <Image
+        //         source={ic_app_logo}
+        //         resizeMode="contain"
+        //         style={styles.wrapLogo}
+        //     /> */}
+        //     <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+        //         <Image
+        //               source={ic_menu}
+        //               resizeMode="contain"
+        //               style={styles.wrapMenu}
+        //         />
+        //     </TouchableOpacity>
+        // </View>
       })
       const keyExtractor = useCallback((item, index) => `${item} ${index}`, []);
 
 return (
   <View style={{ flex: 1 }}>
+    <AppHeader />
     <View style={styles.container}>
       {isLoading ? (
         <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
@@ -124,6 +124,7 @@ return (
       )}
     </View>
     {renderCheckout()}
+    
   </View>
 );
 

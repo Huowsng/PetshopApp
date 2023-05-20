@@ -79,6 +79,7 @@ export interface IReducer {
 }
 
 export interface ICart {
+    types: any
     total: number
     listOrderItems?: any[]
     address: string

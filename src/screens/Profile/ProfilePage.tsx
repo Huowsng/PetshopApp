@@ -4,9 +4,6 @@ import { useDispatch, useSelector, Provider } from "react-redux";
 import { cat, fonts, ICart, ic_app_logo, ic_menu, ic_trash, IItemType, IListOrderItem, IProductCart, IStore, SCREENNAME, ic_paypal, IProfile, ic_back, img_avatar} from "../../shared";
 import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../../shared/colors";
-import { Snackbar } from "react-native-paper";
-import DropDownPicker from "react-native-dropdown-picker";
-import { showMessage } from "react-native-flash-message";
 import { Ionicons } from "@expo/vector-icons";
 const ProfilePage = () => {
         const token = useSelector((state: IStore) => state?.appReducer.token);

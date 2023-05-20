@@ -109,10 +109,10 @@ const ShopScreen = () => {
 
     const headerComponent = (() => {
         return <View>
-            <View style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: colors.cyan, flexDirection: "row", flex: 1 }}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: "#3f3f52", flexDirection: "row", flex: 1 }}>
                 <View style={{ flex: 1 }}>
                     <TextInput
-                        style={{ backgroundColor: "white", borderRadius: 10, padding: 10 }}
+                        style={{ backgroundColor: '#ebf4f5', borderRadius: 10, padding: 10 }}
                         onChangeText={text => setSearchToken(text)}
                         value={searchToken}
                         placeholder={"Search"}
@@ -165,7 +165,7 @@ const ShopScreen = () => {
                     <View style={{ flex: 1, justifyContent: "center", marginTop: 100 }}>
                         <ActivityIndicator
                             size={"large"}
-                            color={colors.cyan}
+                            color={colors.black}
                         />
                     </View>
                     :

@@ -3,11 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image, RefreshControl, Activi
 import { useDispatch, useSelector, Provider } from "react-redux";
 import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../../../shared/colors";
-import { Snackbar } from "react-native-paper";
-import DropDownPicker from "react-native-dropdown-picker";
-import { showMessage } from "react-native-flash-message";
 import { ICart, IDelivery, IItemType, IStore, SCREENNAME, fonts, ic_back } from "../../../shared";
-import WebView from "react-native-webview";
 import HistoryItem from "./Components/HistoryItem";
 const HistoryScreen = ({ navigation }: any) => {
             const token = useSelector((state: IStore) => state?.appReducer.token);
@@ -57,32 +53,53 @@ const HistoryScreen = ({ navigation }: any) => {
         
             const keyExtractor = React.useCallback((item: any, index: number) => `${item} ${index}`, []);
             return (
-                <View style={styles.container}>
+              <View style={styles.container}>
                   <View style={styles.wrapHeader}>
-                    <TouchableOpacity onPress={() => { navigation.goBack() }}>
-                      <Image source={ic_back} resizeMode="contain" style={{ width: 20, height: 20, marginRight: 20 }} />
-                    </TouchableOpacity>
-                    <View style={styles.wrapTextHeader}>
-                      <Text style={styles.txtHeader}>Order History</Text>
-                    </View>
+                      <TouchableOpacity
+                          onPress={() => { navigation.goBack() }}
+                      >
+                          <Image
+                              source={ic_back}
+                              resizeMode="contain"
+                              style={{ width: 20, height: 20, marginRight: 20 }}
+                          />
+                      </TouchableOpacity>
+                      <View style={styles.wrapTextHeader}>
+                          <Text style={styles.txtHeader}>
+                              Order History
+                          </Text>
+                      </View>
+      
                   </View>
                   <View>
-                    {loading ? (
-                      <View style={{ marginTop: 200 }}>
-                        <ActivityIndicator size={50} color={colors.cyan} />
-                      </View>
-                    ) : (
-                      <FlatList
-                        data={data}
-                        renderItem={renderItem}
-                        keyExtractor={keyExtractor}
-                        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-                        ListFooterComponent={<View style={{ height: 100 }} />}
-                      />
-                    )}
+                      {
+                          loading
+                              ?
+                              <View style={{ marginTop: 200 }}>
+                                  <ActivityIndicator
+                                      size={50}
+                                      color={colors.cyan}
+                                  />
+                              </View>
+                              :
+                              <FlatList
+                                  data={data}
+                                  renderItem={(item) => renderItem(item.item)}
+                                  keyExtractor={keyExtractor}
+                                  refreshControl={
+                                      <RefreshControl
+                                          refreshing={isRefreshing}
+                                          onRefresh={onRefresh}
+                                      />
+                                  }
+                                  ListFooterComponent={
+                                      <View style={{ height: 100 }} />
+                                  }
+                              />
+                      }
                   </View>
-                </View>
-              );
+              </View>
+          );
 }
 export default HistoryScreen
 const styles = StyleSheet.create({

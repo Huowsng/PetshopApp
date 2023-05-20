@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Snackbar } from "react-native-paper";
 import { RELOAD_CART } from "../../../redux/actions/actionTypes";
 import { WebView } from 'react-native-webview';
-import { showMessage } from "react-native-flash-message";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const CheckoutWebviewScreen = () => {
         const navigation = useNavigation();
@@ -24,13 +24,13 @@ const CheckoutWebviewScreen = () => {
     const { url } = newNavState;
     useEffect(() => {
         if (webviewUrl.includes('success')) {
-            showMessage({
-              message: 'Checkout Success',
+            Toast.show({
+              
               type: 'success',
-              duration: 3000,
-              description: 'Checkout Success',
-              textStyle: { color: 'white' },
-              backgroundColor: 'green',
+              text1:"Checkout Succes",
+              visibilityTime: 3000,
+              autoHide : true,
+              topOffset: 40,
               onPress: () => {
                 navigation.navigate(SCREENNAME.CART_SCREEN);
               },
@@ -38,13 +38,13 @@ const CheckoutWebviewScreen = () => {
           }
           
           if (webviewUrl.includes('cancel')) {
-            showMessage({
-              message: 'Checkout Cancel',
+            Toast.show({
+              
               type: 'danger',
-              duration: 3000,
-              description: 'Checkout Cancel',
-              textStyle: { color: 'white' },
-              backgroundColor: 'red',
+              text1:"Checkout Cancel",
+              
+              visibilityTime: 3000,
+              autoHide  : true,
               onPress: () => {
                 navigation.navigate(SCREENNAME.CART_SCREEN);
               },

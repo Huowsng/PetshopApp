@@ -3,9 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image, RefreshControl, Activi
 import { useDispatch, useSelector, Provider } from "react-redux";
 import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../../../../shared/colors";
-import { Snackbar } from "react-native-paper";
-import DropDownPicker from "react-native-dropdown-picker";
-import { showMessage } from "react-native-flash-message";
+
 import { IDelivery, SCREENNAME, ic_back } from "../../../../shared";
 const DeliveryStatusScreen = () => {
 

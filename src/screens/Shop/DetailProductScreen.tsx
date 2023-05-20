@@ -7,13 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import colors from '../../shared/colors';
 import { IProduct, IProductprops, IStore, SCREENNAME, fonts, ic_back, ic_empty, ic_search, img_error } from '../../shared';
 import DropDownPicker from "react-native-dropdown-picker";
-import AppHeader from '../Header/AppHeader';
-import ItemProduct from './Components/ItemProduct';
 import { RELOAD_CART } from '../../redux/actions/actionTypes';
-import { Snackbar } from 'react-native-paper';
 import FeedbackComp from './Components/FeedbackComp';
-import { showMessage } from "react-native-flash-message";
-import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 
 
@@ -61,57 +57,64 @@ const DetailProductScreen = () => {
         setIsLoading(false);
     })
 
-    const addCart = async () => {
-        setIsAddCart(true);
-        const body = {
-          type_id: data?.types[value]._id,
-          amount: cardCount,
-          product_id: productID,
-        };
-        console.log(JSON.stringify(body));
-        try {
-          const response = await axios.put('https://petshop-95tt.onrender.com/user/addcart', body, {
-            headers: {
-              Accept: '*/*',
-              'Content-Type': 'application/json',
-              Connection: 'keep-alive',
-              Authorization: `${token}`,
-            },
-          });
-          if (response.status === 200) {
-            console.log("okokokokokokokookokoko")
-            showMessage({
-              message: 'Add this product to cart successfully!',
-              duration: 3000,
-              description: '',
-              type: 'success',
-              backgroundColor: 'green',
-              color: 'white',
-              onPress: () => {
-                navigation.navigate(SCREENNAME.CART_SCREEN);
-              },
-            });
-            dispatch({
-              type: RELOAD_CART,
-              payload: true,
-            });
-          } else {
-            showMessage({
-              message: 'Cannot add to cart!',
-              duration: 3000,
-              description: '',
-              type: 'danger',
-              backgroundColor: 'red',
-              color: 'white',
-            });
-          }
-          console.log(response.data);
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setIsAddCart(false);
+    const addCart = (async () => {
+        setIsAddCart(true)
+        var body = {
+            "type_id": data?.types[value]._id,
+            "amount": cardCount,
+            "product_id": productID
         }
-      };
+        console.log(JSON.stringify(body))
+        await fetch(`https://petshop-95tt.onrender.com/api/cart`,
+            {
+                method: "PUT",
+                headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'application/json',
+                    "Connection": "keep-alive",
+                    "Authorization": `${token}`
+                },
+                body: JSON.stringify(body)
+            }
+        ).finally(() => {
+            setIsAddCart(false);
+        }).then((response) => {
+            if (response.status === 200) {
+                console.log('okokokokokokokoko')
+                Toast.show({
+                  type: 'success',
+                  text1: 'Add this product to cart successfully!',
+                  visibilityTime: 2000,
+                  autoHide: true,
+                  topOffset: 30,
+                  onPress: () => {
+                    navigation.navigate(SCREENNAME.CART_SCREEN);
+                  },
+                  
+                });
+                dispatch({
+                    type: RELOAD_CART,
+                    payload: true
+                })
+              } else {
+                Toast.show({
+                  type: 'error',
+                  text1: 'Cannot add to cart!',
+                  visibilityTime: 2000,
+                  autoHide: true,
+                  topOffset: 30,
+                });
+              }
+            return response.json()
+        })
+            .then((response,) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        setIsAddCart(false);
+    })
 
     const onRefresh = (() => {
         setRefreshing(true);
@@ -169,6 +172,8 @@ const DetailProductScreen = () => {
                 style={styles.wrapCheckout}
                 onPress={() => {
                     addCart()
+                    
+
                 }}
             >
                 {
@@ -238,7 +243,7 @@ const DetailProductScreen = () => {
                                             >{data?.title}</Text>
                                             <Text
                                                 style={styles.txtPrice}
-                                            >{(data?.types[value]?.price ?? "0") + " ₫"}</Text>
+                                            >{(data?.types[value]?.price ?? "0") + " $"}</Text>
                                             <Text
                                                 style={styles.txtDescription}
                                             >{data?.description}</Text>
@@ -305,6 +310,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
+        backgroundColor : ''
+
     },
     wrapImage: {
         aspectRatio: 1,

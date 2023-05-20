@@ -4,10 +4,6 @@ import { useDispatch, useSelector, Provider } from "react-redux";
 import { cat, fonts, ICart, ic_app_logo, ic_menu, ic_trash, IItemType, IListOrderItem, IProductCart, IStore, SCREENNAME, ic_paypal, IProfile, ic_back, img_avatar} from "../../shared";
 import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../../shared/colors";
-import { Snackbar } from "react-native-paper";
-import DropDownPicker from "react-native-dropdown-picker";
-import { showMessage } from "react-native-flash-message";
-import { Ionicons } from "@expo/vector-icons";
 import AppHeader from "../Header/AppHeader";
 import { SAVE_APP_TOKEN } from "../../redux/actions/actionTypes";
 import { MaterialIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
@@ -32,11 +28,11 @@ const ProfileScreen = () => {
                   <MaterialIcons name="person" style={styles.ButtonIcon} />
                 </TouchableOpacity>
       
-                <TouchableOpacity style={styles.wrapButton}>
+                {/* <TouchableOpacity style={styles.wrapButton}>
                   <Text style={styles.ButtonText}>Dashboard</Text>
                   <View style={styles.container}></View>
                   <MaterialIcons name="dashboard" style={styles.ButtonIcon} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
       
                 <TouchableOpacity
                   style={styles.wrapButton}
@@ -49,17 +45,17 @@ const ProfileScreen = () => {
                   <FontAwesome5 name="border-all" style={styles.ButtonIcon} />
                 </TouchableOpacity>
       
-                <TouchableOpacity style={styles.wrapButton}>
+                {/* <TouchableOpacity style={styles.wrapButton}>
                   <Text style={styles.ButtonText}>Downloads</Text>
                   <View style={styles.container}></View>
                   <FontAwesome name="download" style={styles.ButtonIcon} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
       
-                <TouchableOpacity style={styles.wrapButton}>
+                {/* <TouchableOpacity style={styles.wrapButton}>
                   <Text style={styles.ButtonText}>Addresses</Text>
                   <View style={styles.container}></View>
                   <FontAwesome5 name="map-marked-alt" style={styles.ButtonIcon} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
       
                 <TouchableOpacity style={styles.wrapButton}>
                   <Text style={styles.ButtonText}>Account details</Text>
@@ -110,6 +106,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
         borderWidth:1,
+        width: 400,
+        height: 650
     },
     wrapHome: {
         height: '20%',
@@ -130,10 +128,10 @@ const styles = StyleSheet.create({
     },
     wrapBody: {
         width: '100%',
-        height: '87%',
+        height: '85%',
         //borderWidth: 1,
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
 
     },

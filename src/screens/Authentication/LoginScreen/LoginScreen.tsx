@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
 import colors from '../../../shared/colors';
-import { img_login } from '../../../shared/assets';
+import { ic_app_logo, img_avatar, img_login } from '../../../shared/assets';
 import { SAVE_APP_TOKEN } from '../../../redux/actions/actionTypes';
 import { SCREENNAME } from '../../../shared';
 import axios from 'axios';
@@ -62,17 +62,18 @@ const LoginScreen = () => {
       };
     return (
     
-    <ScrollView >
+    <ScrollView  >
+     
+      <View style={styles.wrapImage}>
+           <Image
+                source={ic_app_logo}
+                style={styles.img}
+                resizeMode={"contain"}
+           />
+      </View>
       <Text style={styles.txtLogin}>
         Login
       </Text>
-      <View style={styles.wrapImage}>
-           <Image
-                source={img_login}
-                style={styles.img}
-                resizeMode={"cover"}
-           />
-      </View>
       <Text style={styles.txtDetail}>Email</Text>
       <View style={styles.wrapBorderInput}>
       <Ionicons
@@ -152,6 +153,11 @@ const styles = StyleSheet.create({
     },
     wrapImage: {
         flexDirection: "row",
+        flex : 1,
+        marginHorizontal: 40,
+        marginVertical: 40,
+        width: 200,
+        height: 150,
     },
     txtLogin: {
         fontSize: 40,

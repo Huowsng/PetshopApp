@@ -8,292 +8,305 @@ import CartComponent from "./Components/CartComponents";
 import { Snackbar } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import { showMessage } from "react-native-flash-message";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const PaymentScreen = ({ navigation }: any) => {
-     
-        const route = useRoute();
-            if (!route) {
-             return null;
+
+  const route = useRoute();
+  const { orderID } = route.params as { orderID: string };
+  const { totalPay } = route.params as { totalPay: number }
+
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+
+  const [open, setOpen] = useState(false);
+  const [provinces, setProvinces] = useState([{}])
+  const [provinceIndex, setProvinceIndex] = useState<number>(-2);
+
+
+  const [districts, setDistricts] = useState<any>([])
+  const [isLoadingDistrict, setIsLoadingDistrict] = useState<boolean>(false);
+  const [openDistric, setOpenDistrict] = useState(false);
+  const [districtIndex, setDistrictIndex] = useState<number>(-2);
+
+  const token = useSelector((state: IStore) => state?.appReducer.token);
+  const [url, setURL] = useState<string>("")
+  const [name, setName] = useState("")
+  const [phone, setphone] = useState("")
+  const [detailAddress, setDetailAddress] = useState<string>("")
+
+  const checkoutOrder = (async () => {
+      setIsLoading(true);
+      var body = JSON.stringify({
+          order_id: orderID
+      })
+      await fetch(`https://petshop-95tt.onrender.com/api/cart/checkout`,
+          {
+              method: "POST",
+              headers: {
+                  Accept: '*/*',
+                  'Content-Type': 'application/json',
+                  "Connection": "keep-alive",
+                  "Authorization": `${token}`
+              },
+              body: body,
           }
-        const { orderID } = route.params as { orderID: string };
-        const { totalPay } = route.params as { totalPay: number };
-
-        const [isLoading, setIsLoading] = useState<boolean>(false);
-
-        const [open, setOpen] = useState(false);
-        const [provinces, setProvinces] = useState<{ label: string; value: number; code: number }[]>([]);
-        const [provinceIndex, setProvinceIndex] = useState<number>(-2);
-
-        const [districts, setDistricts] = useState<any>([]);
-        const [isLoadingDistrict, setIsLoadingDistrict] = useState<boolean>(false);
-        const [openDistric, setOpenDistrict] = useState(false);
-        const [districtIndex, setDistrictIndex] = useState<number>(-2);
-
-        const token = useSelector((state: IStore) => state?.appReducer.token);
-        const [url, setURL] = useState<string>("");
-        const [name, setName] = useState("");
-        const [phone, setphone] = useState("")
-        const [detailAddress, setDetailAddress] = useState<string>("");
-        
-        const checkoutOrder = async () => {
-            setIsLoading(true);
-            var body = JSON.stringify({
-            order_id: orderID
-            });
-
-            try {
-            const response = await fetch(`https://petshop-95tt.onrender.com/api/cart/checkout`, {
-                method: "POST",
-                headers: {
-                Accept: '*/*',
-                'Content-Type': 'application/json',
-                "Connection": "keep-alive",
-                "Authorization": `${token}`
-                },
-                body: body,
-            });
-
-            const data = await response.json();
-
-            if (data.url == null) {
-                showMessage({
-                  message: 'An error occurred when checking out the order. Please try again later.',
-                  type: 'danger',
-                  duration: 3000,
-                });
-              } else {
-                navigation.navigate(SCREENNAME.WEBVIEW_CHECKOUT_SCREEN, { pay_url: data.url });
+      ).finally(() => {
+          setIsLoading(false);
+      }).then((response) => {
+          return response.json()
+      })
+          .then((response,) => {
+              if (response.url == null) {
+                  Toast.show({
+                      type : 'error',
+                      text1 : 'An error when checkout order. Please try again later',
+                      visibilityTime: 2000,
+                    autoHide: true,
+                  });
               }
-            } catch (error) {
-            console.error(error);
-            }
+              else {
+                  navigation.navigate(SCREENNAME.WEBVIEW_CHECKOUT_SCREEN, { pay_url: response.url })
+              }
+          })
+          .catch((error) => {
+              console.error(error);
+          });
+      setIsLoading(false);
+  })
 
-            setIsLoading(false);
-        };
-        const getProvinces = async () => {
-        try {
-            const response = await fetch(`https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1`, {
+  const getProvinces = (async () => {
+      await fetch(`https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1`,
+          {
               method: "GET",
               headers: {
-                Accept: '*/*',
-                'Content-Type': 'application/json',
-                "Connection": "keep-alive",
+                  Accept: '*/*',
+                  'Content-Type': 'application/json',
+                  "Connection": "keep-alive",
               },
-            });
-        
-            const data = await response.json();
-        
-            var provinceData = [{ label: "Select province", value: -1, code: 0 }];
-            data.data.data.map((item: any, index: number) => {
-              provinceData = [...provinceData, { label: item.name, value: index, code: item.code }];
-            });
-            
-            setProvinces(provinceData);
-          } catch (error) {
-            console.error(error);
-          } finally {
-            setIsLoading(false);
           }
-            const getDistricts = async () => {
-                setIsLoadingDistrict(true);
-                const code: any = provinces[provinceIndex + 1];
-                const url = `https://vn-public-apis.fpo.vn/districts/getByProvince?limit=-1&provinceCode=${code.code}`;
-                console.log(url);
-              
-                try {
-                  const response = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                      Accept: '*/*',
-                      'Content-Type': 'application/json',
-                      "Connection": "keep-alive",
-                    },
-                  });
-              
-                  const data = await response.json();
-              
-                  var districtData = [{ label: "Select districts", value: -1 }];
-                  data.data.data.map((item: any, index: number) => {
-                    districtData = [...districtData, { label: item.name, value: index }];
-                  });
-                  
-                  setDistricts(districtData);
-                } catch (error) {
-                  console.error(error);
-                } finally {
-                  setIsLoadingDistrict(false);
-                }
-              };
-              const onSetAddress = async () => {
-                setIsLoading(true);
-                const body = {
-                  order_id: orderID,
-                  phone: phone,
-                  name: name,
-                  address: `${detailAddress}, ${districts[districtIndex + 1].label}, ${provinces[provinceIndex + 1].label}`
-                };
-              
-                try {
-                  const response = await fetch(`https://petshop-95tt.onrender.com/api/orders`, {
-                    method: "PUT",
-                    headers: {
-                      Accept: '*/*',
-                      'Content-Type': 'application/json',
-                      "Connection": "keep-alive",
-                      "Authorization": `${token}`
-                    },
-                    body: JSON.stringify(body)
-                  });
-              
-                  const data = await response.json();
-                  checkoutOrder();
-                } catch (error) {
-                  console.error(error);
-                } finally {
-                  setIsLoading(false);
-                }
-              };
-              React.useEffect(() => {
-                getProvinces();
-              }, []);
-              
-              React.useEffect(() => {
-                if (provinceIndex >= 0) {
-                  getDistricts();
-                  console.log("getojiadf");
-                }
-              }, [provinceIndex]);
-              
-              React.useEffect(() => {
-                if (provinces.length > 0) {
-                  console.log(provinces.length);
-                }
-              }, [provinces]);
-              
-              React.useEffect(() => {
-                console.log("provinceIndex: " + JSON.stringify(provinces[provinceIndex]));
-                setDistrictIndex(-2);
-                setDistricts([]);
-              }, [provinceIndex]);
-              return (
-                <View style={styles.container}>
-                  <View style={styles.wrapHeaderLogo}>
-                    <Image
-                      source={ic_app_logo}
-                      resizeMode="contain"
-                      style={styles.wrapLogo}
-                    />
-                  </View>
-                  <View style={styles.body}>
-                    <View style={styles.creditCard}>
-                      <TextInput
-                        placeholder="Name"
-                        value={name}
-                        style={styles.txtInput}
-                        placeholderTextColor="#C1C1C1"
-                        onChangeText={(value) => setName(value)}
-                      />
-                      <TextInput
-                        placeholder="Phone"
-                        value={phone}
-                        style={styles.txtInput}
-                        placeholderTextColor="#C1C1C1"
-                        onChangeText={(value) => setphone(value)}
-                      />
-                      {provinces.length < 2 ? (
-                        <ActivityIndicator color={colors.cyan} size="large" />
-                      ) : (
-                        <View style={{ marginVertical: 10 }}>
-                          <DropDownPicker
-                            open={open}
-                            value={provinceIndex}
-                            items={provinces}
-                            setOpen={setOpen}
-                            setValue={setProvinceIndex}
-                            setItems={setProvinces}
-                            listMode="MODAL"
+      ).finally(() => {
+          setIsLoading(false);
+      }).then((response) => {
+          return response.json()
+      })
+          .then((response) => {
+              var provinceData = [{ label: "Select province", value: -1, code: 0 }];
+              response.data.data.map((item: any, index: number) => {
+                  provinceData = [...provinceData, { label: item.name, value: index, code: item.code }]
+              });
+              setProvinces(provinceData)
+          })
+          .catch((error) => {
+              console.error(error);
+          });
+  })
+
+  const getDistricts = async () => {
+      setIsLoadingDistrict(true);
+      const code: any = provinces[provinceIndex + 1]
+      const url = `https://vn-public-apis.fpo.vn/districts/getByProvince?limit=-1&provinceCode=${code.code}`
+      console.log(url)
+      await fetch(url,
+          {
+              method: "GET",
+              headers: {
+                  Accept: '*/*',
+                  'Content-Type': 'application/json',
+                  "Connection": "keep-alive",
+              },
+          }
+      ).finally(() => {
+          setIsLoading(false);
+      }).then((response) => {
+          return response.json()
+      })
+          .then((response) => {
+              var districData = [{ label: "Select districts", value: -1 }];
+              response.data.data.map((item: any, index: number) => {
+                  districData = [...districData, { label: item.name, value: index }]
+              });
+              setDistricts(districData)
+          })
+          .catch((error) => {
+              console.error(error);
+          });
+      setIsLoadingDistrict(false);
+  }
+  const onSetAddress = async () => {
+      setIsLoading(true);
+      const body = {
+          order_id: orderID,
+          phone: phone,
+          name: name,
+          address: `${detailAddress}, ${districts[districtIndex + 1].label}, ${provinces[provinceIndex + 1].label}`
+      }
+      await fetch(`https://petshop-95tt.onrender.com/api/orders`,
+          {
+              method: "PUT",
+              headers: {
+                  Accept: '*/*',
+                  'Content-Type': 'application/json',
+                  "Connection": "keep-alive",
+                  "Authorization": `${token}`
+              },
+              body: JSON.stringify(body)
+          }
+      ).finally(() => {
+      }).then((response) => {
+          return response.json()
+      })
+          .then((response) => {
+              checkoutOrder();
+          })
+          .catch((error) => {
+              console.error(error);
+          });
+  }
+
+  React.useEffect(() => {
+      getProvinces()
+  }, [])
+
+  React.useEffect(() => {
+      if (provinceIndex >= 0) {
+          getDistricts()
+          console.log("getojiadf")
+      }
+  }, [provinceIndex])
+
+  React.useEffect(() => {
+      if (provinces)
+          console.log(provinces.length)
+  }, [provinces])
+
+  React.useEffect(() => {
+      console.log("provinceIndex: " + JSON.stringify(provinces[provinceIndex]))
+      setDistrictIndex(-2)
+      setDistricts([])
+  }, [provinceIndex])
+
+
+  return (
+      <View style={styles.container}>
+          <View style={styles.wrapHeaderLogo}>
+              <Image
+                  source={ic_app_logo}
+                  resizeMode="contain"
+                  style={styles.wrapLogo}
+              />
+          </View>
+          <View style={styles.body}>
+              <View style={styles.creditCard}>
+
+                  <TextInput
+                      placeholder='Name'
+                      value={name}
+                      style={styles.txtInput}
+                      placeholderTextColor='#C1C1C1'
+                      onChangeText={(value) => setName(value)}
+                  />
+                  <TextInput
+                      placeholder='Phone'
+                      value={phone}
+                      style={styles.txtInput}
+                      placeholderTextColor='#C1C1C1'
+                      onChangeText={(value) => setphone(value)}
+                  />
+                  {
+                      provinces.length < 2
+                          ?
+                          <ActivityIndicator
+                              color={colors.cyan}
+                              size={"large"}
                           />
-                        </View>
-                      )}
-                      {isLoadingDistrict ? (
-                        <ActivityIndicator color={colors.cyan} size="large" />
-                      ) : null}
-                      {districts.length < 1 ? null : (
-                        <DropDownPicker
-                          open={openDistric}
-                          value={districtIndex}
-                          items={districts}
-                          setOpen={setOpenDistrict}
-                          setValue={setDistrictIndex}
-                          setItems={setDistricts}
-                          listMode="MODAL"
-                        />
-                      )}
-                      <View style={{ marginTop: 10 }}>
-                        <TextInput
-                          placeholder="Detail Address"
+                          :
+                          <View style={{ marginVertical: 10 }}>
+                              <DropDownPicker
+                                  open={open}
+                                  value={provinceIndex}
+                                  items={provinces}
+                                  setOpen={setOpen}
+                                  setValue={setProvinceIndex}
+                                  setItems={setProvinces}
+                                  listMode={"MODAL"}
+                              />
+                          </View>
+                  }
+                  {
+                      isLoadingDistrict
+                          ?
+                          <ActivityIndicator
+                              color={colors.cyan}
+                              size={"large"}
+                          />
+                          :
+                          <></>
+                  }
+                  {
+                      districts.length < 1
+                          ?
+                          <></>
+                          :
+                          <DropDownPicker
+                              open={openDistric}
+                              value={districtIndex}
+                              items={districts}
+                              setOpen={setOpenDistrict}
+                              setValue={setDistrictIndex}
+                              setItems={setDistricts}
+                              listMode={"MODAL"}
+                          />
+                  }
+                  <View style={{ marginTop: 10 }}>
+                      <TextInput
+                          placeholder='Detail Address'
                           value={detailAddress}
                           style={styles.txtInput}
-                          placeholderTextColor="#C1C1C1"
+                          placeholderTextColor='#C1C1C1'
                           onChangeText={(value) => setDetailAddress(value)}
-                        />
-                      </View>
-                    </View>
-                    <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                      <Text style={{ fontSize: 20, color: colors.cyan }}>$</Text>
-                      <Text style={{ fontSize: 50, color: colors.cyan }}>
-                        {`${totalPay}.00`}
-                      </Text>
-                    </View>
-                    <View style={{ justifyContent: "center", alignItems: "center" }}>
-                      <Image
-                        source={ic_paypal}
-                        style={{ height: 100, width: 150 }}
-                        resizeMode="contain"
                       />
-                    </View>
-                    <View style={{ justifyContent: "center", alignItems: "center" }}>
-                      <TouchableOpacity
-                        style={[
-                          styles.wrapButton,
-                          {
-                            backgroundColor:
-                              isLoading ||
-                              name.length < 1 ||
-                              phone.length < 1 ||
-                              detailAddress.length < 1 ||
-                              (districtIndex < 0 && districts.length > 0)
-                                ? "gray"
-                                : colors.cyan,
-                          },
-                        ]}
-                        disabled={
-                          isLoading ||
-                          name.length < 1 ||
-                          phone.length < 1 ||
-                          detailAddress.length < 1 ||
-                          (districtIndex < 0 && districts.length > 0)
-                        }
-                        onPress={onSetAddress}
-                      >
-                        {isLoading ? (
-                          <ActivityIndicator color={colors.white} size="small" />
-                        ) : (
-                          <View>
-                            <Text style={styles.txtButton}>Pay</Text>
-                          </View>
-                        )}
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Text style={styles.txtButtonBack}>Cancel Payment</Text>
-                        </TouchableOpacity>
-                </View>
-            </View>
+                  </View>
+              </View>
+              <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                  <Text style={{ fontSize: 20, color: colors.cyan }}>$</Text>
+                  <Text style={{ fontSize: 50, color: colors.cyan }}>{`${totalPay}.00`}</Text>
+              </View>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                  <Image
+                      source={ic_paypal}
+                      style={{ height: 100, width: 150 }}
+                      resizeMode="contain"
+                  />
+              </View>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <TouchableOpacity
+                      style={[styles.wrapButton, { backgroundColor: (isLoading || name.length < 1 || phone.length < 1 || detailAddress.length < 1 || (districtIndex < 0 && districts.length > 0)) ? "gray" : colors.cyan }]}
+                      disabled={isLoading || name.length < 1 || phone.length < 1 || detailAddress.length < 1 || (districtIndex < 0 && districts.length > 0)}
+                      onPress={onSetAddress}
+                  >
+                      {
+                          isLoading
+                              ?
+                              <ActivityIndicator
+                                  color={colors.white}
+                                  size="small"
+                              />
+                              :
+                              <View>
+                                  <Text style={styles.txtButton}>Pay</Text>
+                              </View>
+                      }
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                      <Text style={styles.txtButtonBack}>Cancel Payment</Text>
+                  </TouchableOpacity>
+              </View>
+          </View>
 
-        </View>
-    );
-    }
-}
+      </View>
+  );
+};
+
 export default PaymentScreen
 
 const styles = StyleSheet.create({
