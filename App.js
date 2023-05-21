@@ -14,6 +14,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import CartComponent from './src/screens/Cart/Components/CartComponents';
 import CartScreen from './src/screens/Cart/CartScreen';
 import DetailProductScreen from './src/screens/Shop/DetailProductScreen';
+import HomeScreen from './src/screens/Home/HomeScreen';
 
 
 

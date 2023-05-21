@@ -68,7 +68,7 @@ const DrawerContent = () => {
           <Ionicons name="home" size={24} color="black" />
         )}
         label="Home"
-        onPress={() => {}}
+        onPress={() => navigation.navigate(SCREENNAME.HOME_SCREEN)}
       />
       <DrawerItem
         icon={({ color, size }) => (

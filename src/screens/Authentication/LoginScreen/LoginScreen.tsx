@@ -152,11 +152,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     wrapImage: {
+      alignSelf: "center",
         flexDirection: "row",
         flex : 1,
         marginHorizontal: 40,
         marginVertical: 40,
-        width: 200,
+        width: 345,
         height: 150,
     },
     txtLogin: {

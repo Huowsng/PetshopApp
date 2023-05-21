@@ -27,6 +27,7 @@ import MapWebviewScreen from '../Profile/OderHistory/Components/MapWebviewScreen
 import WishListScreen from '../Wishlist/WishListScreen';
 import RegisterScreen from '../Authentication/LoginScreen/RegisterScreen';
 import Toast from 'react-native-toast-message';
+import HomeScreen from '../Home/HomeScreen';
 
 
 const AppNavigation = () => {
@@ -61,6 +62,15 @@ const AppNavigation = () => {
                 }
             }}
         >
+            <Tab.Screen
+                name={SCREENNAME.HOME_SCREEN}
+                component={HomeScreen}
+                options={{
+                    tabBarLabel: "",
+                    tabBarIcon: ({ focused }) => { return tabbarIcon(focused, 'home', "Home") }
+                }}
+                
+            />
             <Tab.Screen
                 name={SCREENNAME.SHOP_SCREEN}
                 component={ShopScreen}

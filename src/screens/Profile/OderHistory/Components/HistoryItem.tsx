@@ -6,59 +6,99 @@ import colors from "../../../../shared/colors";
 
 import { ICart, IDelivery, IItemType, SCREENNAME, ic_back } from "../../../../shared";
 interface IProps {
-    item: ICart
-}
-const HistoryItem = ({ item }: IProps) => {
-        const navigation = useNavigation<any>();
-        const [orderDate, setOrderDate] = React.useState<Date>(new Date(item.updatedAt));
+    item?: ICart
+  }
+const HistoryItem = (item) => {
+    const navigation = useNavigation<any>();
+    const [orderDate, setOrderDate] = React.useState<Date>(
+        item && item.updatedAt ? new Date(item.updatedAt) : new Date()
+    );
+    const [data, setData] = React.useState<ICart>();
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const getData = (async () => {
+        setLoading(true)
+        await fetch(`https://petshop-95tt.onrender.com/api/orders`,
+            {
+                method: "GET",
+                headers: {
+                    Accept: '*/*',
+                    'Content-Type': 'application/json',
+                    "Connection": "keep-alive",
+                }
+            }
+        ).finally(() => {
+            setLoading(false);
+        }).then((response) => {
+            return response.json()
+        })
+            .then((response,) => {
+                setData(response.data)
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        setLoading(false)
+    })
+    
+    React.useEffect(() => {
+        getData()
+    }, [])
 
-        const renderItem = (item: IItemType) => {
-                return (
-                <TouchableOpacity
-                    onPress={() => {
-                    navigation.navigate(SCREENNAME.DETAIL_PRODUCT_SCREEN, { productID: item.product_id });
-                    }}
-                >
-                    <View style={styles.wrapItem}>
-                    <Image
-                        source={{ uri: item.image }}
-                        style={styles.wrapImage}
-                        resizeMode="contain"
-                    />
+    const renderItem = (item: IItemType) => {
+        return <TouchableOpacity
+            onPress={() => {
+                navigation.navigate(SCREENNAME.DETAIL_PRODUCT_SCREEN, { productID: item.product_id })
+            }}
+        >
+            <View style={styles.wrapItem}>
+                <Image
+                    source={{ uri: item.image }}
+                    style={styles.wrapImage}
+                    resizeMode="contain"
+                />
 
-                    <View style={styles.wrapDetailProduct}>
-                        <Text style={styles.txtName}>
+                <View style={styles.wrapDetailProduct}>
+                    <Text style={styles.txtName}>
                         {item.product_name}
+                    </Text>
+                    <View style={styles.wrapType}>
+                        <Text
+                            style={styles.txtType}
+                        >{`Type: ${item.type_name}`}</Text>
+                    </View>
+                    <View style={styles.wrapPrice}>
+                        <Text style={styles.txtDetailPrice}>
+                            {`Quantity: ${item.amount}`}
                         </Text>
-                        <View style={styles.wrapType}>
-                        <Text style={styles.txtType}>{`Type: ${item.type_name}`}</Text>
-                        </View>
-                        <View style={styles.wrapPrice}>
-                        <Text style={styles.txtDetailPrice}>{`Quantity: ${item.amount}`}</Text>
-                        <Text style={styles.txtDetailPrice}>{`Price: $${item.price}`}</Text>
-                        </View>
+                        <Text style={styles.txtDetailPrice}>
+                            {`Price: $${item.price}`}
+                        </Text>
                     </View>
-                    </View>
-                </TouchableOpacity>
-                );}
-                return (
-                    <View style={styles.container}>
-                      <Text style={{ fontSize: 16 }}>{`Order ID: ${item._id}\nAddress: ${item.address}\nPhone: ${item.phone}`}</Text>
-                      <FlatList
-                        data={item.listOrderItems}
-                        renderItem={(item) => renderItem(item.item)}
-                      />
-                      <Text style={styles.txtDate}>{`Order Date: ${orderDate.getFullYear()}/${orderDate.getMonth()}/${orderDate.getDate()}`}</Text>
-                      <Text style={styles.txtTotal}>{`Total: $${item.total}`}</Text>
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate(SCREENNAME.DELIVERY_STATUS_SCREEN, { deliveryID: "LLUUGA" });
-                        }}
-                      >
-                        <Text style={styles.wrapDelivery}>Delivery Status</Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
+                </View>
+            </View>
+        </TouchableOpacity>
+    }
+
+    return (
+        <View style={styles.container}>
+            <Text style={{ fontSize: 16 }}>
+                {`Order ID: ${data?._id}\nAddress: ${item.address}\nPhone: ${item.phone}`}
+            </Text>
+            <FlatList
+                data={item.listOrderItems}
+                renderItem={(item) => renderItem(item.item)}
+            />
+            <Text style={styles.txtDate}>{`Order Date: ${orderDate.getFullYear()}/${orderDate.getMonth()}/${orderDate.getDate()}`}</Text>
+            <Text style={styles.txtTotal}>{`Total: $${item.total}`}</Text>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate(SCREENNAME.DELIVERY_STATUS_SCREEN, { deliveryID: "LLUUGA" })
+                }}
+            >
+                <Text style={styles.wrapDelivery}>Delivery Status</Text>
+            </TouchableOpacity>
+        </View>
+    );
 
 }
 export default HistoryItem

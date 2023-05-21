@@ -12,6 +12,10 @@ export const ic_trash = require("../assets/icons/ic_trash.png");
 export const ic_back = require("../assets/icons/ic_back.png");
 export const ic_empty = require("../assets/icons/ic_empty.png");
 export const ic_paypal = require("../assets/icons/ic_paypal.png");
+export const ic_vacin = require("../assets//icons/ic_vacin.png");
+export const ic_pet = require("../assets//icons/ic_pet.png");
+export const ic_hotel = require("../assets//icons/ic_hotel.png")
+export const ic_cleaning = require("../assets//icons/ic_cleaning.png")
 
 //images
 export const cat = require("../assets/images/cat_demo.jpg");
