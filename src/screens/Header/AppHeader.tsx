@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, TextInput, Alert,Image,ActivityIndicator, Pressable } from "react-native";
 import { ScrollView } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation, useTheme } from '@react-navigation/native';
 import { useDispatch } from "react-redux";
 import colors from '../../shared/colors';
-import { ic_app_logo, ic_menu } from '../../shared';
+import { SCREENNAME, ic_app_logo, ic_menu } from '../../shared';
 const appAppHeader = () => {
     return (
         <AppNavbar />
@@ -22,7 +22,9 @@ const AppNavbar = () => {
         resizeMode="contain"
         style={styles.wrapLogo}
       />
-      
+ <Pressable onPress={() => navigation.navigate(SCREENNAME.CART_SCREEN)}>
+ <FontAwesome5 name="shopping-cart" size={26} color="black" />
+</Pressable>     
 <Pressable onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
   <Ionicons name="menu" size={40} color="black" />
 </Pressable>

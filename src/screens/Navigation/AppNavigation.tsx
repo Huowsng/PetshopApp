@@ -28,6 +28,8 @@ import WishListScreen from '../Wishlist/WishListScreen';
 import RegisterScreen from '../Authentication/LoginScreen/RegisterScreen';
 import Toast from 'react-native-toast-message';
 import HomeScreen from '../Home/HomeScreen';
+import GroomingScreen from '../Home/components/GroomingScreen';
+import CleaningScreen from '../Home/components/CleaningScreen';
 
 
 const AppNavigation = () => {
@@ -173,6 +175,16 @@ const AppNavigation = () => {
                 options={{ headerShown: false }}
                 component={PaymentScreen}
             />
+            <Stack.Screen
+                name={SCREENNAME.GROMMING_SCREEN}
+                options={{ headerShown: false }}
+                component={GroomingScreen}
+            />
+            <Stack.Screen
+                name={SCREENNAME.CLEANING_SCREEN}
+                options={{ headerShown: false }}
+                component={CleaningScreen}
+            />
         </Stack.Navigator>
     })
 
@@ -190,8 +202,7 @@ const AppNavigation = () => {
                     options={{ headerShown: false }}
                     name= {"Cart"}
                     component={CartScreen}
-                />
-                 
+                />                
             </Drawer.Navigator>
             <Toast />
         </NavigationContainer>

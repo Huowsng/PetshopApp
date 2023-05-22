@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     },
     txtDetailCreate: {
         fontSize: 16,
-        color: "gray",
+        color: "black",
         marginVertical: 20,
     },
     txtCreateAccount: {
