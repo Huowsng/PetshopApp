@@ -5,10 +5,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import colors from '../../../shared/colors';
-import { ic_app_logo, ic_clean, ic_cleaning, ic_hotel, ic_pet, ic_pet1, ic_pet2, ic_pet3, ic_vacin } from '../../../shared';
+import { SCREENNAME, ic_app_logo, ic_clean, ic_cleaning, ic_hotel, ic_pet, ic_pet1, ic_pet2, ic_pet3, ic_vacin } from '../../../shared';
 import { ScreenHeight } from 'react-native-elements/dist/helpers';
 import AppHeader from '../../Header/AppHeader';
 const CleaningScreen = () => {
+    const navigation = useNavigation();
     return (
         <ScrollView style={styles.container}>
             <View style={styles.groomingUp}>
@@ -51,10 +52,12 @@ const CleaningScreen = () => {
                         <Text style ={styles.text1}>Bảng giá sẽ phụ thuộc vào chủng loại + cân nặng + Khu vực.</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={styles.contactButton}>
+                <TouchableOpacity  
+                         
+                        style={styles.contactButton}>
                                 <FontAwesome5 name = "phone-alt" style={styles.contactIcon} />
-                                    <Text style = {styles.groomingInfoText}>Liên hệ chúng tôi</Text>
-                                </TouchableOpacity>
+                                    <Text style = {styles.groomingInfoText} onPress={() => navigation.navigate(SCREENNAME.CONTACT_SCREEN )}>Liên hệ chúng tôi</Text>
+                </TouchableOpacity>
              
             </View>
         </ScrollView>

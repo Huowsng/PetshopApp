@@ -4,7 +4,6 @@ import { useDispatch, useSelector, Provider } from "react-redux";
 import { cat, fonts, ICart, ic_app_logo, ic_menu, ic_trash, IItemType, IListOrderItem, IProductCart, IStore, SCREENNAME, ic_back } from "../../../shared";
 import colors from "../../../shared/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Snackbar } from "react-native-paper";
 import { RELOAD_CART } from "../../../redux/actions/actionTypes";
 import { WebView } from 'react-native-webview';
 import { Toast } from "react-native-toast-message/lib/src/Toast";
@@ -13,19 +12,16 @@ const CheckoutWebviewScreen = () => {
         const navigation = useNavigation();
         const route = useRoute();
         if (!route) {
-            return null;
+          return null;
         }
         const { pay_url } = route.params as { pay_url: string };
         const dispatch = useDispatch();
         const [isLoading, setIsLoading] = React.useState(false);
         const [webviewUrl, setWebviewUrl] = React.useState(pay_url);
 
-  const handleURL = (newNavState) => {
-    const { url } = newNavState;
-    useEffect(() => {
-        if (webviewUrl.includes('success')) {
+        const handleURL = (url: string) => {
+          if (url.includes('success')) {
             Toast.show({
-              
               type: 'success',
               text1:"Checkout Succes",
               visibilityTime: 3000,
@@ -37,12 +33,10 @@ const CheckoutWebviewScreen = () => {
             });
           }
           
-          if (webviewUrl.includes('cancel')) {
+          if (url.includes('cancel')) {
             Toast.show({
-              
               type: 'danger',
               text1:"Checkout Cancel",
-              
               visibilityTime: 3000,
               autoHide  : true,
               onPress: () => {
@@ -50,13 +44,15 @@ const CheckoutWebviewScreen = () => {
               },
             });
           }
-        dispatch({
-          type: RELOAD_CART,
-          payload: true,
-        });
-      }, [webviewUrl]);
-    setWebviewUrl(url);
-  };
+          dispatch({
+            type: RELOAD_CART,
+            payload: true,
+          });
+        };
+      
+        useEffect(() => {
+          setWebviewUrl(pay_url);
+        }, [pay_url]);
   return (
     <View style={styles.container}>
       <View style={styles.wrapHeader}>
@@ -80,8 +76,8 @@ const CheckoutWebviewScreen = () => {
       </View>
       <View style={{ flex: 1 }}>
         <WebView
-          onNavigationStateChange={handleURL}
-          source={{ uri: pay_url }}
+          onNavigationStateChange={(newNavState) => handleURL(newNavState.url)}
+          source={{ uri: webviewUrl }}
           javaScriptEnabled={true}
           onLoadStart={() => setIsLoading(true)}
           onLoadEnd={() => setIsLoading(false)}

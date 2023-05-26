@@ -9,6 +9,8 @@ import { Snackbar } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import { showMessage } from "react-native-flash-message";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import AppHeader from "../Header/AppHeader";
+import { ScrollView } from "react-native-gesture-handler";
 
 const PaymentScreen = ({ navigation }: any) => {
 
@@ -188,13 +190,8 @@ const PaymentScreen = ({ navigation }: any) => {
 
   return (
       <View style={styles.container}>
-          <View style={styles.wrapHeaderLogo}>
-              <Image
-                  source={ic_app_logo}
-                  resizeMode="contain"
-                  style={styles.wrapLogo}
-              />
-          </View>
+            <AppHeader />
+            <ScrollView>
           <View style={styles.body}>
               <View style={styles.creditCard}>
 
@@ -302,7 +299,7 @@ const PaymentScreen = ({ navigation }: any) => {
                   </TouchableOpacity>
               </View>
           </View>
-
+          </ScrollView>
       </View>
   );
 };
@@ -312,7 +309,9 @@ export default PaymentScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F2F2F2'
+        backgroundColor: '#F2F2F2',
+        paddingHorizontal: 0,
+        paddingVertical: 30,
     },
     body: {
         marginTop: 20,

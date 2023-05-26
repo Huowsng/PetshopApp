@@ -8,41 +8,15 @@ import { ICart, IDelivery, IItemType, SCREENNAME, ic_back } from "../../../../sh
 interface IProps {
     item?: ICart
   }
-const HistoryItem = (item) => {
+  const HistoryItem = ({ item }: IProps) => {
+
     const navigation = useNavigation<any>();
-    const [orderDate, setOrderDate] = React.useState<Date>(
-        item && item.updatedAt ? new Date(item.updatedAt) : new Date()
-    );
-    const [data, setData] = React.useState<ICart>();
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const getData = (async () => {
-        setLoading(true)
-        await fetch(`https://petshop-95tt.onrender.com/api/orders`,
-            {
-                method: "GET",
-                headers: {
-                    Accept: '*/*',
-                    'Content-Type': 'application/json',
-                    "Connection": "keep-alive",
-                }
-            }
-        ).finally(() => {
-            setLoading(false);
-        }).then((response) => {
-            return response.json()
-        })
-            .then((response,) => {
-                setData(response.data)
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-        setLoading(false)
-    })
-    
-    React.useEffect(() => {
-        getData()
-    }, [])
+    const [orderDate, setOrderDate] = React.useState<Date>(new Date);
+    useEffect(() => {
+        if (item?.updatedAt) {
+          setOrderDate(new Date(item?.updatedAt));
+        }
+      }, [item]);
 
     const renderItem = (item: IItemType) => {
         return <TouchableOpacity
@@ -59,37 +33,37 @@ const HistoryItem = (item) => {
 
                 <View style={styles.wrapDetailProduct}>
                     <Text style={styles.txtName}>
-                        {item.product_name}
+                        {item?.product_name}
                     </Text>
                     <View style={styles.wrapType}>
                         <Text
                             style={styles.txtType}
-                        >{`Type: ${item.type_name}`}</Text>
+                        >{`Type: ${item?.type_name}`}</Text>
                     </View>
                     <View style={styles.wrapPrice}>
                         <Text style={styles.txtDetailPrice}>
-                            {`Quantity: ${item.amount}`}
+                            {`Quantity: ${item?.amount}`}
                         </Text>
                         <Text style={styles.txtDetailPrice}>
-                            {`Price: $${item.price}`}
+                            {`Price: $${item?.price}`}
                         </Text>
                     </View>
                 </View>
             </View>
         </TouchableOpacity>
     }
-
+  
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 16 }}>
-                {`Order ID: ${data?._id}\nAddress: ${item.address}\nPhone: ${item.phone}`}
+                {`Order ID: ${item?._id}\nAddress: ${item?.address}\nPhone: ${item?.phone}`}
             </Text>
             <FlatList
-                data={item.listOrderItems}
+                data={item?.listOrderItems}
                 renderItem={(item) => renderItem(item.item)}
             />
             <Text style={styles.txtDate}>{`Order Date: ${orderDate.getFullYear()}/${orderDate.getMonth()}/${orderDate.getDate()}`}</Text>
-            <Text style={styles.txtTotal}>{`Total: $${item.total}`}</Text>
+            <Text style={styles.txtTotal}>{`Total: $${item?.total}`}</Text>
             <TouchableOpacity
                 onPress={() => {
                     navigation.navigate(SCREENNAME.DELIVERY_STATUS_SCREEN, { deliveryID: "LLUUGA" })
@@ -99,7 +73,6 @@ const HistoryItem = (item) => {
             </TouchableOpacity>
         </View>
     );
-
 }
 export default HistoryItem
 const styles = StyleSheet.create({

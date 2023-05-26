@@ -50,7 +50,9 @@ const MapWebviewScreen = () => {
 export default MapWebviewScreen
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 25,
     },
     wrapBack: {
         height: 20,

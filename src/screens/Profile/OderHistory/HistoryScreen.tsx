@@ -7,7 +7,6 @@ import { ICart, IDelivery, IItemType, IStore, SCREENNAME, fonts, ic_back } from 
 import HistoryItem from "./Components/HistoryItem";
 const HistoryScreen = ({ navigation }: any) => {
             const token = useSelector((state: IStore) => state?.appReducer.token);
-
             const [data, setData] = React.useState<ICart[]>([]);
             const [loading, setLoading] = React.useState(false);
             const [isRefreshing, setIsRefreshing] = React.useState(false);
@@ -15,7 +14,7 @@ const HistoryScreen = ({ navigation }: any) => {
             const getData = React.useCallback(async () => {
             setLoading(true);
             try {
-                const response = await fetch('https://petshop-95tt.onrender.com/api/history', {
+                const response = await fetch('https://petshop-95tt.onrender.com/api/orders', {
                 method: 'GET',
                 headers: {
                     Accept: '*/*',
@@ -104,7 +103,9 @@ const HistoryScreen = ({ navigation }: any) => {
 export default HistoryScreen
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 25,
     },
     wrapHeader: {
         flexDirection: "row",

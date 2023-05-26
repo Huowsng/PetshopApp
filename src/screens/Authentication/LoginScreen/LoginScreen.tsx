@@ -144,6 +144,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 25,
     },
     img: {
         marginHorizontal: 80,

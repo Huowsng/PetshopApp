@@ -30,6 +30,7 @@ import Toast from 'react-native-toast-message';
 import HomeScreen from '../Home/HomeScreen';
 import GroomingScreen from '../Home/components/GroomingScreen';
 import CleaningScreen from '../Home/components/CleaningScreen';
+import ContactScreen from '../Home/ContactScreen';
 
 
 const AppNavigation = () => {
@@ -82,7 +83,16 @@ const AppNavigation = () => {
                 }}
                 
             />
-            <Tab.Screen
+             <Tab.Screen
+                name={SCREENNAME.CONTACT_SCREEN}
+                component={ContactScreen}
+                options={{
+                    tabBarLabel: "",
+                    tabBarIcon: ({ focused }) => { return tabbarIcon(focused, 'phone', "Contact") }
+                }}
+                
+            />
+            {/* <Tab.Screen
                 name={SCREENNAME.CART_SCREEN}
                 component={CartScreen}
                 options={{
@@ -90,7 +100,7 @@ const AppNavigation = () => {
                     tabBarIcon: ({ focused }) => { return tabbarIcon(focused, "shopping-cart", "Cart") },      
                 }}
             
-            />
+            /> */}
             {/* <Tab.Screen
                 name={SCREENNAME.WISHLIST_SCREEN}
                 component={WishListScreen}
@@ -104,7 +114,7 @@ const AppNavigation = () => {
                 component={ProfileScreen}
                 options={{
                     tabBarLabel: "",
-                    tabBarIcon: ({ focused }) => { return tabbarIcon(focused, "user", "Profile") }
+                    tabBarIcon: ({ focused }) => { return tabbarIcon(focused, "user-alt", "Profile") }
                 }}
             />
         </Tab.Navigator>
@@ -129,6 +139,11 @@ const AppNavigation = () => {
                 name={SCREENNAME.HOME_STACK}
                 options={{ headerShown: false }}
                 component={HomeStack}
+            />
+             <Stack.Screen
+                name={SCREENNAME.CART_SCREEN}
+                options={{ headerShown: false }}
+                component={CartScreen}
             />
             <Stack.Screen
                 name={SCREENNAME.DETAIL_PRODUCT_SCREEN}

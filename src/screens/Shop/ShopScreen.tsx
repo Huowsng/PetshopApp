@@ -108,7 +108,7 @@ const ShopScreen = () => {
     const keyExtractor = React.useCallback((item: any, index: any) => `${item} ${index}`, []);
 
     const headerComponent = (() => {
-        return <View>
+        return <View >
             <View style={{ paddingVertical: 10, paddingHorizontal: 20, backgroundColor: "#3f3f52", flexDirection: "row", flex: 1 }}>
                 <View style={{ flex: 1 }}>
                     <TextInput
@@ -195,6 +195,8 @@ export default ShopScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 25,
     },
     wrapHeader: {
         padding: 30,

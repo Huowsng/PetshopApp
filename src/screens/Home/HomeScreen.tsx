@@ -170,6 +170,8 @@ const styles = {
     container: {
       flex: 1,
       backgroundColor: '#fff',
+      paddingHorizontal: 0,
+        paddingVertical: 25,
     },
     serviceWrapper: {
       paddingHorizontal: 20,

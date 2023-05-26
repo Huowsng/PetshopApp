@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import colors from '../../../shared/colors';
-import { ic_app_logo, ic_cleaning, ic_hotel, ic_pet, ic_pet1, ic_pet2, ic_pet3, ic_vacin } from '../../../shared';
+import { SCREENNAME, ic_app_logo, ic_cleaning, ic_hotel, ic_pet, ic_pet1, ic_pet2, ic_pet3, ic_vacin } from '../../../shared';
 import { ScreenHeight } from 'react-native-elements/dist/helpers';
 import AppHeader from '../../Header/AppHeader';
 
@@ -32,6 +32,7 @@ const data2 = [
 ];
 
 const GroomingScreen = () => {
+    const navigation = useNavigation();
     return (
         <View style={styles.container}>
             <AppHeader />
@@ -49,21 +50,21 @@ const GroomingScreen = () => {
                     </Text>
                     <View style={styles.groomingInfo}>
                         <View style={styles.groomingInfoLeft}>
-                            {data1.map((item) => (
-                                <View style={styles.groomingInfoItem}>
-                                    <FontAwesome5 name = 'check' color="black" size = {24}  />
-                                    <Text style={styles.groomingInfoText}>{item}</Text>
-                                </View>
-                            ))}
+                        {data1.map((item, index) => (
+                            <View key={index} style={styles.groomingInfoItem}>
+                                <FontAwesome5 name='check' color="black" size={24} />
+                                <Text style={styles.groomingInfoText}>{item}</Text>
+                            </View>
+))}
                         </View>
                         <View style={styles.groomingInfoRight}>
                             <Text style={styles.groomingPrice}>Chỉ từ {'\n'} 400.000Đ</Text>
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.contactButton}>
+                    <TouchableOpacity style={styles.contactButton} >
                         <FontAwesome5 name = "phone-alt" style={styles.contactIcon} />
-                        <Text style={styles.groomingInfoText}>Liên hệ chúng tôi</Text>
+                        <Text style={styles.groomingInfoText} onPress={() => navigation.navigate(SCREENNAME.CONTACT_SCREEN )}>Liên hệ chúng tôi</Text>
                     </TouchableOpacity>
                 </View>
             
@@ -74,29 +75,29 @@ const GroomingScreen = () => {
                     <Text style={styles.groomingComboSubtitle}>PET SERVICE COMBO</Text>
                 </View>
                 <View style={styles.groomingComboRight}>
-                    {data2.map((item) => (
-                        <View style={styles.groomingComboItem}>
+                {data2.map((item, index) => (
+                        <View key={index} style={styles.groomingComboItem}>
                             <View style={styles.comboItem}>
-                                <Text style={styles.serComboName}>{item.comboName}</Text>
-                                <Text style={styles.serComboPrice}>{item.price}</Text>
-                                <View style={styles.serList}>
-                                    {item.serviceNone.map((items, i) => (
-                                        <View key={i} style={styles.groomingInfoItem}>
-                                            <FontAwesome5 name="minus" size={24} color="black" />
-                                            <Text style={styles.groomingInfoText}>{items}</Text>
-                                        </View>
-                                    ))}
-                                    {item.serviceHas.map((items, i) => (
-                                        <View key={i} style={styles.groomingInfoItem}>
-                                            <FontAwesome5 name="check" size={24} color="black" />
-                                            <Text style={styles.groomingInfoText}>{items}</Text>
-                                        </View>
-                                    ))}
+                            <Text style={styles.serComboName}>{item.comboName}</Text>
+                            <Text style={styles.serComboPrice}>{item.price}</Text>
+                            <View style={styles.serList}>
+                                {item.serviceNone.map((items, i) => (
+                                <View key={i} style={styles.groomingInfoItem}>
+                                    <FontAwesome5 name="minus" size={24} color="black" />
+                                    <Text style={styles.groomingInfoText}>{items}</Text>
                                 </View>
-                                <TouchableOpacity style={styles.contactButton}>
-                                <FontAwesome5 name = "phone-alt" style={styles.contactIcon} />
-                                    <Text style = {styles.groomingInfoText}>Liên hệ chúng tôi</Text>
-                                </TouchableOpacity>
+                                ))}
+                                {item.serviceHas.map((items, i) => (
+                                <View key={i} style={styles.groomingInfoItem}>
+                                    <FontAwesome5 name="check" size={24} color="black" />
+                                    <Text style={styles.groomingInfoText}>{items}</Text>
+                                </View>
+                                ))}
+                            </View>
+                            <TouchableOpacity style={styles.contactButton} >
+                                <FontAwesome5 name="phone-alt" style={styles.contactIcon} />
+                                <Text style={styles.groomingInfoText} onPress={() => navigation.navigate(SCREENNAME.CONTACT_SCREEN )}>Liên hệ chúng tôi</Text>
+                            </TouchableOpacity>
                             </View>
                         </View>
                     ))}
@@ -110,6 +111,9 @@ const GroomingScreen = () => {
 const styles = {
     container: {
         flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 25,
+
     },
     groomingUp: {
         alignItems: 'center',

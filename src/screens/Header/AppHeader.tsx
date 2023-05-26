@@ -16,18 +16,18 @@ const AppNavbar = () => {
   const navigation = useNavigation();
 
     return (
-        <View style={styles.wrapHeader}>
-      <Image
-        source={ic_app_logo}
-        resizeMode="contain"
-        style={styles.wrapLogo}
-      />
- <Pressable onPress={() => navigation.navigate(SCREENNAME.CART_SCREEN)}>
- <FontAwesome5 name="shopping-cart" size={26} color="black" />
-</Pressable>     
-<Pressable onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-  <Ionicons name="menu" size={40} color="black" />
-</Pressable>
+      <View style={styles.wrapHeader}>
+        <Image
+          source={ic_app_logo}
+          resizeMode="contain"
+          style={styles.wrapLogo}
+        />
+        <Pressable onPress={() => navigation.navigate(SCREENNAME.CART_SCREEN)}>
+            <FontAwesome5 name="shopping-cart" size={26} color="black" />
+        </Pressable>     
+        <Pressable onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+            <Ionicons name="menu" size={40} color="black" />
+        </Pressable>
     </View>
       );
 }
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white'
     },
-    wrapHeader: {
+    wrapHeader: {      
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",

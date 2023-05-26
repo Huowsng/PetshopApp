@@ -142,6 +142,8 @@ export default ProfilePage
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 25,
     },
     wrapButtonBack: {
         height: 24,
