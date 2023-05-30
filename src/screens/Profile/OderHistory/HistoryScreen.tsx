@@ -14,7 +14,7 @@ const HistoryScreen = ({ navigation }: any) => {
             const getData = React.useCallback(async () => {
             setLoading(true);
             try {
-                const response = await fetch('https://petshop-95tt.onrender.com/api/orders', {
+                const response = await fetch('https://petshop-95tt.onrender.com/api/history', {
                 method: 'GET',
                 headers: {
                     Accept: '*/*',
@@ -83,7 +83,7 @@ const HistoryScreen = ({ navigation }: any) => {
                               :
                               <FlatList
                                   data={data}
-                                  renderItem={(item) => renderItem(item.item)}
+                                  renderItem={(item) => renderItem(item)}
                                   keyExtractor={keyExtractor}
                                   refreshControl={
                                       <RefreshControl

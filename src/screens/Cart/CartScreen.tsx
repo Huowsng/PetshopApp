@@ -81,6 +81,14 @@ interface IProductCartParams {
         const renderEmpty = (() => {
           return <View style={{ marginTop: 200 }}>
               <Text style={{ color: colors.cyan, fontSize: 20, textAlign: "center" }}>{`Empty Card!\n Add any product to checkout`}</Text>
+              <TouchableOpacity
+                style={styles.wrapCheckout}
+                onPress={() => {
+                navigation.navigate(SCREENNAME.SHOP_SCREEN)
+              }}
+            >
+              <Text style={styles.txtCheckout}>{`Go to shop`}</Text>
+            </TouchableOpacity>
           </View>
       })
       const renderHeader = (() => {
@@ -102,7 +110,7 @@ interface IProductCartParams {
       const keyExtractor = useCallback((item, index) => `${item} ${index}`, []);
 
 return (
-  <View style={{ flex: 1 }}>
+  <View style={styles.cart}>
     <AppHeader />
     <View style={styles.container}>
       {isLoading ? (
@@ -136,13 +144,19 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flex: 1,
     },
+    cart:{
+      flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 25,
+    },
     wrapCheckout: {
         height: 50,
         backgroundColor: colors.cyan,
         borderRadius: 50,
         justifyContent: "center",
         alignItems: "center",
-        marginHorizontal: 50
+        marginHorizontal: 50,
+        marginTop: 15
     },
     txtCheckout: {
         fontSize: fonts.font20,

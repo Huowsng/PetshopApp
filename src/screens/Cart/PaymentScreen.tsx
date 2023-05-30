@@ -5,7 +5,7 @@ import { cat, fonts, ICart, ic_app_logo, ic_menu, ic_trash, IItemType, IListOrde
 import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../../shared/colors";
 import CartComponent from "./Components/CartComponents";
-import { Snackbar } from "react-native-paper";
+import { RadioButton, Snackbar } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
 import { showMessage } from "react-native-flash-message";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
@@ -23,7 +23,7 @@ const PaymentScreen = ({ navigation }: any) => {
   const [open, setOpen] = useState(false);
   const [provinces, setProvinces] = useState([{}])
   const [provinceIndex, setProvinceIndex] = useState<number>(-2);
-
+  const [paymentMethod, setPaymentMethod] = useState('cash');
 
   const [districts, setDistricts] = useState<any>([])
   const [isLoadingDistrict, setIsLoadingDistrict] = useState<boolean>(false);
@@ -67,7 +67,19 @@ const PaymentScreen = ({ navigation }: any) => {
                   });
               }
               else {
-                  navigation.navigate(SCREENNAME.WEBVIEW_CHECKOUT_SCREEN, { pay_url: response.url })
+                if( paymentMethod === 'cash'){
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Payment completed',
+                        visibilityTime: 2000,
+                        autoHide: true,
+                      });
+                    navigation.navigate(SCREENNAME.HOME_SCREEN)
+                  }
+                  else if(paymentMethod === 'PayPal'){
+                    navigation.navigate(SCREENNAME.WEBVIEW_CHECKOUT_SCREEN, { pay_url: response.url })
+                  }
+                  
               }
           })
           .catch((error) => {
@@ -263,6 +275,21 @@ const PaymentScreen = ({ navigation }: any) => {
                           onChangeText={(value) => setDetailAddress(value)}
                       />
                   </View>
+                  <View>
+                        <Text style={styles.txtInput}>Chọn phương thức thanh toán</Text>
+                            <RadioButton.Group onValueChange={value => setPaymentMethod(value)} value={paymentMethod}>                          
+                                <View style={styles.paymentOption}>
+                                    <RadioButton value="cash" />
+                                    <Text style={styles.paymentOptionText}>Thanh toán tiền mặt</Text>
+                                    
+                                </View>
+                                <View style={styles.paymentOption}>
+                                    <RadioButton value="PayPal" />
+                                    <Text style={styles.paymentOptionText}>Thanh toán qua PayPal</Text>
+                                    
+                                </View>
+                        </RadioButton.Group>
+                    </View>
               </View>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
                   <Text style={{ fontSize: 20, color: colors.cyan }}>$</Text>
@@ -387,4 +414,13 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         marginLeft: 20
     },
+    paymentOption: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+      },
+      paymentOptionText: {
+        flex: 1,
+        marginLeft: 10,
+      },
 })
