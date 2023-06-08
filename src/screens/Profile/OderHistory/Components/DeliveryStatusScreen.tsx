@@ -121,6 +121,9 @@ const DeliveryStatusScreen = () => {
 export default DeliveryStatusScreen
 const styles = StyleSheet.create({
     container: {
+      flex: 1,
+        paddingHorizontal: 0,
+        paddingVertical: 25,
     },
     wrapHeader: {
         flexDirection: "row",

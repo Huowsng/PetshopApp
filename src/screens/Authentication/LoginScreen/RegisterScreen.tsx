@@ -9,6 +9,7 @@ import { ic_app_logo, img_login } from '../../../shared/assets';
 import { SAVE_APP_TOKEN } from '../../../redux/actions/actionTypes';
 import { SCREENNAME } from '../../../shared';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 const RegisterScreen = () => {
     const navigation = useNavigation();
 
@@ -41,6 +42,13 @@ const RegisterScreen = () => {
         }
     
         const responseData = response.data;
+        Toast.show({
+          type: 'success',
+          text1: 'Dang ki thanh cong',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+        });
         navigation.navigate(SCREENNAME.LOGIN_SCREEN);
         dispatch({
           type: SAVE_APP_TOKEN,

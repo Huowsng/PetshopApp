@@ -14,7 +14,7 @@ const HistoryScreen = ({ navigation }: any) => {
             const getData = React.useCallback(async () => {
             setLoading(true);
             try {
-                const response = await fetch('https://petshop-95tt.onrender.com/api/history', {
+                const response = await fetch('https://petshop-95tt.onrender.com/api/orders', {
                 method: 'GET',
                 headers: {
                     Accept: '*/*',

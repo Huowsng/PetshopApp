@@ -35,7 +35,7 @@ const CheckoutWebviewScreen = () => {
           
           if (url.includes('cancel')) {
             Toast.show({
-              type: 'danger',
+              type: 'success',
               text1:"Checkout Cancel",
               visibilityTime: 3000,
               autoHide  : true,
@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: 70
+        height: 70,
+        marginTop: 30,
     },
     wrapLoading: {
         flex: 1,
@@ -113,5 +114,6 @@ const styles = StyleSheet.create({
     wrapTextHeader: {
         fontSize: fonts.font24,
         fontWeight: 'bold',
+        
     }
 });

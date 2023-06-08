@@ -4,10 +4,8 @@ import { useDispatch, useSelector, Provider } from "react-redux";
 import { cat, fonts, ICart, ic_app_logo, ic_menu, ic_trash, IItemType, IListOrderItem, IProductCart, IStore, SCREENNAME, ic_paypal} from "../../shared";
 import { DrawerActions, useNavigation, useRoute } from "@react-navigation/native";
 import colors from "../../shared/colors";
-import CartComponent from "./Components/CartComponents";
 import { RadioButton, Snackbar } from "react-native-paper";
 import DropDownPicker from "react-native-dropdown-picker";
-import { showMessage } from "react-native-flash-message";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import AppHeader from "../Header/AppHeader";
 import { ScrollView } from "react-native-gesture-handler";
@@ -17,25 +15,21 @@ const PaymentScreen = ({ navigation }: any) => {
   const route = useRoute();
   const { orderID } = route.params as { orderID: string };
   const { totalPay } = route.params as { totalPay: number }
-
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-
   const [open, setOpen] = useState(false);
   const [provinces, setProvinces] = useState([{}])
   const [provinceIndex, setProvinceIndex] = useState<number>(-2);
   const [paymentMethod, setPaymentMethod] = useState('cash');
-
   const [districts, setDistricts] = useState<any>([])
   const [isLoadingDistrict, setIsLoadingDistrict] = useState<boolean>(false);
   const [openDistric, setOpenDistrict] = useState(false);
   const [districtIndex, setDistrictIndex] = useState<number>(-2);
-
   const token = useSelector((state: IStore) => state?.appReducer.token);
   const [url, setURL] = useState<string>("")
   const [name, setName] = useState("")
   const [phone, setphone] = useState("")
   const [detailAddress, setDetailAddress] = useState<string>("")
-
+    
   const checkoutOrder = (async () => {
       setIsLoading(true);
       var body = JSON.stringify({
@@ -70,7 +64,7 @@ const PaymentScreen = ({ navigation }: any) => {
                 if( paymentMethod === 'cash'){
                     Toast.show({
                         type: 'success',
-                        text1: 'Payment completed',
+                        text1: 'Đặt hàng thành công',
                         visibilityTime: 2000,
                         autoHide: true,
                       });
@@ -168,9 +162,10 @@ const PaymentScreen = ({ navigation }: any) => {
       ).finally(() => {
       }).then((response) => {
           return response.json()
+          
       })
           .then((response) => {
-              checkoutOrder();
+            checkoutOrder();
           })
           .catch((error) => {
               console.error(error);
@@ -306,7 +301,7 @@ const PaymentScreen = ({ navigation }: any) => {
                   <TouchableOpacity
                       style={[styles.wrapButton, { backgroundColor: (isLoading || name.length < 1 || phone.length < 1 || detailAddress.length < 1 || (districtIndex < 0 && districts.length > 0)) ? "gray" : colors.cyan }]}
                       disabled={isLoading || name.length < 1 || phone.length < 1 || detailAddress.length < 1 || (districtIndex < 0 && districts.length > 0)}
-                      onPress={onSetAddress}
+                      onPress={onSetAddress }
                   >
                       {
                           isLoading

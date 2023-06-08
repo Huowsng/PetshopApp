@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, TextInput, Alert,Image,ActivityIndicator, FlatList, RefreshControl } from "react-native";
-import { ScrollView } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@react-navigation/native';
-import { useDispatch } from "react-redux";
 import colors from '../../shared/colors';
 import { IProduct, IProductprops, fonts, ic_empty, ic_search } from '../../shared';
 import DropDownPicker from "react-native-dropdown-picker";
@@ -18,7 +14,6 @@ const ShopScreen = () => {
     const [data, setData] = useState<IProduct[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [refreshing, setRefreshing] = useState(false);
-
     const [items, setItems] = useState([{ label: 'All', value: 'All', index: -1 }]);
     const [isLoadingCategory, setIsLoadingCategory] = useState<boolean>(false);
 
@@ -135,8 +130,8 @@ const ShopScreen = () => {
             <View style={{ padding: 20, height: open ? items.length * 60 : 90 }}>
                 <DropDownPicker
                     open={open}
-                    value={value}
                     items={items}
+                    value={value}
                     setOpen={setOpen}
                     setValue={setValue}
                     setItems={setItems}
@@ -144,7 +139,6 @@ const ShopScreen = () => {
             </View>
         </View>
     })
-
     const renderEmpty = () => {
         return <View style={{ justifyContent: "center", marginTop: 100 }}>
             <Image
@@ -189,7 +183,6 @@ const ShopScreen = () => {
         </View>
     );
 }
-
 export default ShopScreen 
 
 const styles = StyleSheet.create({

@@ -44,7 +44,7 @@ const ItemProduct = ({ item }: IProductprops) => {
           />
           <View style={styles.wrapDetail}>
             <View style={styles.wrapTxtDetail}>
-              <Text style={styles.txtPrice}>{`$ ${item?.price ?? '20000'}`}</Text>
+              <Text style={styles.txtPrice}>{`$ ${item?.price ?? '20000'}`}</Text>  
               <Text numberOfLines={2} style={styles.txtName}>
                 {name}
               </Text>

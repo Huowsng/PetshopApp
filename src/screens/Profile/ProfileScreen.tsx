@@ -27,13 +27,6 @@ const ProfileScreen = () => {
                   <View style={styles.container}></View>
                   <MaterialIcons name="person" style={styles.ButtonIcon} />
                 </TouchableOpacity>
-      
-                {/* <TouchableOpacity style={styles.wrapButton}>
-                  <Text style={styles.ButtonText}>Dashboard</Text>
-                  <View style={styles.container}></View>
-                  <MaterialIcons name="dashboard" style={styles.ButtonIcon} />
-                </TouchableOpacity> */}
-      
                 <TouchableOpacity
                   style={styles.wrapButton}
                   onPress={() => {
@@ -44,19 +37,6 @@ const ProfileScreen = () => {
                   <View style={styles.container}></View>
                   <FontAwesome5 name="border-all" style={styles.ButtonIcon} />
                 </TouchableOpacity>
-      
-                {/* <TouchableOpacity style={styles.wrapButton}>
-                  <Text style={styles.ButtonText}>Downloads</Text>
-                  <View style={styles.container}></View>
-                  <FontAwesome name="download" style={styles.ButtonIcon} />
-                </TouchableOpacity> */}
-      
-                {/* <TouchableOpacity style={styles.wrapButton}>
-                  <Text style={styles.ButtonText}>Addresses</Text>
-                  <View style={styles.container}></View>
-                  <FontAwesome5 name="map-marked-alt" style={styles.ButtonIcon} />
-                </TouchableOpacity> */}
-      
                 <TouchableOpacity style={styles.wrapButton}>
                   <Text style={styles.ButtonText}>Account details</Text>
                   <View style={styles.container}></View>
@@ -131,16 +111,17 @@ const styles = StyleSheet.create({
     wrapBody: {
         width: '100%',
         height: '85%',
-        //borderWidth: 1,
+        borderWidth: 0.5,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
 
     },
     wrapButton: {
-        width: 314, height: 50, flexDirection: 'row',
+        width: 314,
+        height: 50, 
+        flexDirection: 'row',
         backgroundColor: '#F7F7F7',
-        //borderWidth: 1,
         alignItems: 'center',
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
@@ -176,20 +157,6 @@ const styles = StyleSheet.create({
     wrapMenu: {
         height: 25,
         aspectRatio: 1,
-    },
-    wrapSearch: {
-        height: 25,
-        aspectRatio: 1,
-        marginRight: 20
-    },
-    wrapSearchBox: {
-        backgroundColor: colors.white,
-        borderRadius: 20,
-        marginTop: 20,
-        height: 50,
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
     },
     txtSearch: {
         fontSize: fonts.font20,
