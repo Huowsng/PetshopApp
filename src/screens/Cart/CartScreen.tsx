@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     cart:{
       flex: 1,
         paddingHorizontal: 0,
-        paddingVertical: 25,
+        paddingVertical: 35,
     },
     wrapCheckout: {
         height: 50,

@@ -110,36 +110,38 @@ const PaymentScreen = ({ navigation }: any) => {
   })
 
   const getDistricts = async () => {
-      setIsLoadingDistrict(true);
-      const code: any = provinces[provinceIndex + 1]
-      const url = `https://vn-public-apis.fpo.vn/districts/getByProvince?limit=-1&provinceCode=${code.code}`
-      console.log(url)
-      await fetch(url,
-          {
-              method: "GET",
-              headers: {
-                  Accept: '*/*',
-                  'Content-Type': 'application/json',
-                  "Connection": "keep-alive",
-              },
-          }
-      ).finally(() => {
-          setIsLoading(false);
-      }).then((response) => {
-          return response.json()
-      })
-          .then((response) => {
-              var districData = [{ label: "Select districts", value: -1 }];
-              response.data.data.map((item: any, index: number) => {
-                  districData = [...districData, { label: item.name, value: index }]
-              });
-              setDistricts(districData)
-          })
-          .catch((error) => {
-              console.error(error);
-          });
-      setIsLoadingDistrict(false);
-  }
+    setIsLoadingDistrict(true);
+    const code: any = provinces[provinceIndex + 1];
+    const url = `https://vn-public-apis.fpo.vn/districts/getByProvince?limit=-1&provinceCode=${code.code}`;
+    console.log(url);
+    await fetch(url, {
+        method: "GET",
+        headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Connection: "keep-alive",
+        },
+    })
+        .finally(() => {
+            setIsLoading(false);
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((response) => {
+            if (response.data && response.data.data) {
+                var districData = [{ label: "Chọn quận/huyện", value: -1 }];
+                response.data.data.map((item: any, index: number) => {
+                    districData = [...districData, { label: item.name, value: index }];
+                });
+                setDistricts(districData);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    setIsLoadingDistrict(false);
+};
   const onSetAddress = async () => {
       setIsLoading(true);
       const body = {
@@ -161,12 +163,12 @@ const PaymentScreen = ({ navigation }: any) => {
           }
       ).finally(() => {
       }).then((response) => {
+            checkoutOrder();
           return response.json()
           
+          
       })
-          .then((response) => {
-            checkoutOrder();
-          })
+          
           .catch((error) => {
               console.error(error);
           });
@@ -333,7 +335,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F2F2F2',
         paddingHorizontal: 0,
-        paddingVertical: 30,
+        paddingVertical: 35,
     },
     body: {
         marginTop: 20,

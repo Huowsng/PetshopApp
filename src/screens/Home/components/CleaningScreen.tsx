@@ -11,6 +11,7 @@ import AppHeader from '../../Header/AppHeader';
 const CleaningScreen = () => {
     const navigation = useNavigation();
     return (
+        <View style={styles.containerMain}>              
         <ScrollView style={styles.container}>
             <View style={styles.groomingUp}>
                     <Image
@@ -61,6 +62,7 @@ const CleaningScreen = () => {
              
             </View>
         </ScrollView>
+        </View> 
     );
 };
 
@@ -68,6 +70,11 @@ const styles = {
     container: {
         flexDirection: 'column',
         flex: 1,
+        
+    },
+    containerMain: {
+        paddingVertical: 35,
+        flex : 1
     },
     hotelContainer: {
         flexDirection: 'column',
@@ -152,6 +159,7 @@ const styles = {
         paddingVertical: 15,
         paddingHorizontal: 40,
         borderRadius: 20,
+        marginBottom : 25
    
     },
     contactIcon: {

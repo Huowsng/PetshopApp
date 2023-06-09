@@ -103,7 +103,7 @@ const DrawerContent = () => {
           <Ionicons name="call" size={24} color="black" />
         )}
         label="Contact"
-        onPress={() => {}}
+        onPress={() => navigation.navigate(SCREENNAME.CONTACT_SCREEN)}
       />
     </View>
         );
@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         height: 70,
         flexDirection: 'row',
+        
     },
     DrawerHeaderMain: {
         width: '40%',

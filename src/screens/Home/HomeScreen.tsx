@@ -171,7 +171,7 @@ const styles = {
       flex: 1,
       backgroundColor: '#fff',
       paddingHorizontal: 0,
-        paddingVertical: 25,
+        paddingVertical: 35,
     },
     serviceWrapper: {
       paddingHorizontal: 20,

@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 0,
-        paddingVertical: 25,
+        paddingVertical: 35,
     },
     txtLogin: {
         fontSize: 40,

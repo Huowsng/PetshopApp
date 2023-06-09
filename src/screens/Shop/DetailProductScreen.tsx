@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor : '',
         paddingHorizontal: 0,
-        paddingVertical: 25,
+        paddingVertical: 35,
 
     },
     wrapImage: {

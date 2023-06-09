@@ -24,7 +24,6 @@ const ProfileScreen = () => {
                   onPress={() => { navigation.navigate(SCREENNAME.PROFILE_PAGE) }}
                   style={styles.wrapButton}>
                   <Text style={styles.ButtonText}>Person</Text>
-                  <View style={styles.container}></View>
                   <MaterialIcons name="person" style={styles.ButtonIcon} />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -34,12 +33,10 @@ const ProfileScreen = () => {
                   }}
                 >
                   <Text style={styles.ButtonText}>Orders</Text>
-                  <View style={styles.container}></View>
                   <FontAwesome5 name="border-all" style={styles.ButtonIcon} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.wrapButton}>
                   <Text style={styles.ButtonText}>Account details</Text>
-                  <View style={styles.container}></View>
                   <MaterialIcons name="account-box" style={styles.ButtonIcon} />
                 </TouchableOpacity>
       
@@ -58,7 +55,6 @@ const ProfileScreen = () => {
                   })
                 }}>
                   <Text style={styles.ButtonText}>Logout</Text>
-                  <View style={styles.container}></View>
                   <MaterialIcons name="logout" style={styles.ButtonIcon} />
                 </TouchableOpacity>
               </View>
@@ -80,7 +76,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         paddingHorizontal: 0,
-        paddingVertical: 25,
+        paddingVertical: 35,
     },
     containerBody: {
         flex: 1,
@@ -123,6 +119,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#F7F7F7',
         alignItems: 'center',
+        justifyContent: 'space-between',
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20,
         marginVertical: 7,
