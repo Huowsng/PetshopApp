@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@react-navigation/native';
 import colors from '../../../shared/colors';
-import { img_login } from '../../../shared/assets';
+import { ic_app_logo, img_login } from '../../../shared/assets';
 import { SCREENNAME } from '../../../shared';
 
 const ForgetPassword = ({navigation}:any) => {
@@ -14,16 +14,17 @@ const ForgetPassword = ({navigation}:any) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     return ( 
         <ScrollView>
-            <Text style={styles.txtLogin}>
-                ForgotPassword 
-            </Text>
             <View style={styles.wrapImage}>
            <Image
-                source={img_login}
+                source={ic_app_logo}
                 style={styles.img}
-                resizeMode={"cover"}
+                resizeMode={"contain"}
            />
-            </View>  
+            </View>
+            <Text style={styles.txtLogin}>
+                Forgot Password 
+            </Text>
+             
            <Text style={styles.txtDetail}>Email</Text>
             <View style={styles.wrapBorderInput}  >
                 <Ionicons
@@ -75,14 +76,16 @@ const styles = StyleSheet.create({
         paddingVertical: 35,
     },
     txtLogin: {
-        fontSize: 40,
+        fontSize: 30,
         fontWeight: "bold",
         color: colors.cyan,
-        marginTop: 30,
+        marginTop: 10,
         alignSelf: "center",
+        marginBottom : 10
     },
     wrapImage: {
         flexDirection: "row",
+        marginTop : 30
     },
     img: {
         marginHorizontal: 80,
